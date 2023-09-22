@@ -29,13 +29,11 @@ private:
     size_t _width, _height;
 public:
     Buffer();
-    Buffer(size_t width, size_t height);
+    Buffer(size_t width, size_t height = 1);
     std::optional<Unit*> get(size_t x, size_t y);
     Vector2<size_t> size();
     size_t len();
 };
-
-class Renderee;
 
 class Window{
 private:
@@ -47,7 +45,7 @@ private:
     std::vector<BufferPos> _buffers;
 public:
     Window();
-    std::shared_ptr<Buffer> init_buffer(size_t w, size_t h, size_t x, size_t y);
+    std::shared_ptr<Buffer> init_buffer(size_t w, size_t h, size_t x = 0, size_t y = 0);
     void remove_buffer(std::shared_ptr<Buffer>& buffer);
     void render();
     Vector2<size_t> get_size();
@@ -60,19 +58,4 @@ public:
     virtual void   bind(Window& window) = 0;
     virtual void unbind(Window& window) = 0;
 };
-
-class ProgressBar : public Renderee{
-private:
-    size_t _len;
-    std::shared_ptr<Buffer> _buffer;
-
-public: 
-    ProgressBar(size_t len);
-
-    void set_per(float p);
-    void write() override;
-    void bind(Window& window) override;
-    void unbind(Window& window) override;
-};
-
 #endif

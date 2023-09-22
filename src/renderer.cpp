@@ -6,7 +6,7 @@
 #include <optional>
 #include <renderer.hpp>
 
-Buffer::Buffer(){} Buffer::Buffer(size_t width, size_t height = 0):
+Buffer::Buffer(){} Buffer::Buffer(size_t width, size_t height):
     data(std::make_unique<Unit[]>(width * height)),
     _width(width),
     _height(height)
@@ -45,7 +45,7 @@ Window::~Window(){
     endwin();
 }
 
-std::shared_ptr<Buffer> Window::init_buffer(size_t w, size_t h, size_t x = 0, size_t y = 0){
+std::shared_ptr<Buffer> Window::init_buffer(size_t w, size_t h, size_t x, size_t y){
     auto shrd_ptr = std::make_shared<Buffer>(w, h);
     this->_buffers.push_back(BufferPos{{x, y}, shrd_ptr});
 
@@ -87,25 +87,3 @@ Vector2<size_t> Window::get_size() {
     return this->_present_buffer.size();
 }
 
-
-// ProgressBar
-ProgressBar::ProgressBar(size_t len): _len(len){ }
-
-void ProgressBar::write(){
-
-}
-
-void ProgressBar::bind(Window& window){
-    this->_buffer = window.init_buffer(this->_len, 1);
-}
-
-void ProgressBar::unbind(Window& window){
-}
-
-void ProgressBar::set_per(float per){
-    auto max = size_t(per * this->_len);
-    if(max > this->_len) max = this->_len;
-    for(size_t i = 0; i < max; ++i){
-        this->_buffer->get(i, 0).value()->c = '|';
-    }
-}

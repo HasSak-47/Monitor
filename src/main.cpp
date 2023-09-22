@@ -1,6 +1,8 @@
 #include <chrono>
-#include <renderer.hpp>
 #include <thread>
+
+#include <renderer.hpp>
+#include <progress_bar.hpp>
 
 
 int main() {
