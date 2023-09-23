@@ -7,7 +7,7 @@ void ProgressBar::write(){
 }
 
 void ProgressBar::bind(Window& window){
-    this->_buffer = window.init_buffer(this->_len, 1);
+    this->_buffer = window.init_buffer(this, this->_len, 1);
 }
 
 void ProgressBar::unbind(Window& window){

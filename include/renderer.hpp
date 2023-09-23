@@ -35,18 +35,21 @@ public:
     size_t len();
 };
 
+class Renderee;
+
 class Window{
 private:
     Buffer _present_buffer;
-    struct BufferPos{
+    struct BufferData{
+        Renderee* parent;
         Vector2<size_t> pos;
         std::shared_ptr<Buffer> _buffer;
     };
-    std::vector<BufferPos> _buffers;
+    std::vector<BufferData> _buffers;
 public:
     Window();
-    std::shared_ptr<Buffer> init_buffer(size_t w, size_t h, size_t x = 0, size_t y = 0);
-    void remove_buffer(std::shared_ptr<Buffer>& buffer);
+    std::shared_ptr<Buffer> init_buffer(Renderee* parent, size_t w, size_t h, size_t x = 0, size_t y = 0);
+    void remove_buffer(Renderee* parent);
     void render();
     Vector2<size_t> get_size();
     ~Window();

@@ -45,11 +45,24 @@ Window::~Window(){
     endwin();
 }
 
-std::shared_ptr<Buffer> Window::init_buffer(size_t w, size_t h, size_t x, size_t y){
+std::shared_ptr<Buffer> Window::init_buffer(Renderee* parent, size_t w, size_t h, size_t x, size_t y){
     auto shrd_ptr = std::make_shared<Buffer>(w, h);
-    this->_buffers.push_back(BufferPos{{x, y}, shrd_ptr});
+    this->_buffers.push_back(BufferData{parent, {x, y}, shrd_ptr});
 
     return shrd_ptr;
+}
+
+void Window::remove_buffer(Renderee* parent){
+    auto finder = [&](BufferData b){ return b.parent == parent;};
+    auto element = std::find_if(
+        this->_buffers.begin(),
+        this->_buffers.end(),
+        finder
+    );
+
+    this->_buffers.erase(element);
+
+
 }
 
 static void write_to_buffer(size_t x, size_t y, Buffer& dest, Buffer& src){
