@@ -65,15 +65,14 @@ void Window::unbind_buffer(Renderee* parent){
 
 static void write_to_buffer(size_t x, size_t y, Buffer& dest, Buffer& src){
     auto s_size = src.size();
-    auto d_size = dest.size();
 
     for(size_t i = 0; i < s_size.x; ++i){
-        if(i + x >= d_size.x) continue;
         for(size_t j = 0; j < s_size.y; ++j){
-            if(j + y >= d_size.y) continue;
-            auto dest_ptr = dest.get(i + x, j + y).value();
-            auto  src_ptr =  src.get(i, j).value();
-            *dest_ptr = *src_ptr;
+            auto dest_o = dest.get(i + x, j + y);
+            auto  src_o =  src.get(i, j);
+            if(dest_o.has_value() && src_o.has_value()){
+                *dest_o.value() = *src_o.value();
+            }
         }
     }
 }

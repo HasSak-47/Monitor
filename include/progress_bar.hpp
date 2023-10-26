@@ -14,7 +14,7 @@ private:
     Buffer _buffer;
     float _per;
 public: 
-    Opts opts = (Opts)3;
+    Opts opts = (Opts)0;
     ProgressBar(size_t len);
     char var_char = '|';
 

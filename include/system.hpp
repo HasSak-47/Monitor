@@ -25,4 +25,6 @@ public:
     void refresh();
 };
 
+extern System sys;
+
 #endif // __PROCESS_HPP__
