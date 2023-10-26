@@ -6,12 +6,12 @@ void ProgressBar::write(){
 
 }
 
-void ProgressBar::bind(Window& window){
-    this->_buffer = window.init_buffer(this, this->_len, 1);
+void ProgressBar::bind(Window& window, size_t x, size_t y){
+    window.bind_buffer(this, x, y);
 }
 
 void ProgressBar::unbind(Window& window){
-    window.remove_buffer(this);
+    window.unbind_buffer(this);
 }
 
 #include <cmath>
@@ -24,10 +24,14 @@ void ProgressBar::set_per(float per){
         max = this->_len;
     let min = ends ? 1 : 0;
     if(ends){
-        self._buffer->get(0, 0).value()->c = '[';
-        self._buffer->get(self._len - 1, 0).value()->c = ']';
+        self._buffer.get(0, 0).value()->c = '[';
+        self._buffer.get(self._len - 1, 0).value()->c = ']';
     }
     for(size_t i = min; i < max; ++i){
-        this->_buffer->get(i, 0).value()->c = self.var_char;
+        this->_buffer.get(i, 0).value()->c = self.var_char;
     }
+}
+
+Buffer& ProgressBar::get_buffer(){
+    return this->_buffer;
 }

@@ -11,8 +11,8 @@ enum class Opts: uint8_t {
 class ProgressBar : public Renderee{
 private:
     size_t _len;
-    std::shared_ptr<Buffer> _buffer;
-    std::shared_ptr<float> _per;
+    Buffer _buffer;
+    float _per;
 public: 
     Opts opts = (Opts)3;
     ProgressBar(size_t len);
@@ -20,8 +20,9 @@ public:
 
     void set_per(float p);
     void write() override;
-    void bind(Window& window) override;
+    void bind(Window& window, size_t x, size_t y) override;
     void unbind(Window& window) override;
+    Buffer& get_buffer() override;
 };
 
 #endif

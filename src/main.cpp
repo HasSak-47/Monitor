@@ -10,7 +10,7 @@ int main() {
     mut window = Window();
     mut bar = ProgressBar(24);
 
-    bar.bind(window);
+    bar.bind(window, 0, 0);
     bar.var_char = '#';
     System sys;
     sys.get_processes();

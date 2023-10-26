@@ -48,24 +48,19 @@ Window::~Window(){
     endwin();
 }
 
-std::shared_ptr<Buffer> Window::init_buffer(Renderee* parent, size_t w, size_t h, size_t x, size_t y){
-    auto shrd_ptr = std::make_shared<Buffer>(w, h);
-    this->_buffers.push_back(BufferData{parent, {x, y}, shrd_ptr});
-
-    return shrd_ptr;
+void Window::bind_buffer(Renderee* parent, size_t x, size_t y){
+    this->_renderees.push_back(Renderees{parent, {x, y}});
 }
 
-void Window::remove_buffer(Renderee* parent){
-    auto finder = [&](BufferData b){ return b.parent == parent;};
-    auto element = std::find_if(
-        this->_buffers.begin(),
-        this->_buffers.end(),
-        finder
-    );
-
-    this->_buffers.erase(element);
-
-
+void Window::unbind_buffer(Renderee* parent){
+    auto buffer = std::find_if(this->_renderees.begin(), this->_renderees.end(),
+            [&](Renderees val){ return val.parent == parent; });
+    if(buffer == this->_renderees.end()){
+        std::cout << "parent not found!\n";
+    }
+    else{
+        this->_renderees.erase(buffer);
+    }
 }
 
 static void write_to_buffer(size_t x, size_t y, Buffer& dest, Buffer& src){
@@ -84,10 +79,9 @@ static void write_to_buffer(size_t x, size_t y, Buffer& dest, Buffer& src){
 }
 
 void Window::render(){
-    for(auto& buffer : this->_buffers){
-        buffer.parent->write();
-        auto offs = buffer.pos;
-        write_to_buffer(offs.x, offs.y, this->_present_buffer, *buffer._buffer);
+    for(auto& renderee : this->_renderees){
+        renderee.parent->write();
+        write_to_buffer(renderee.pos.x, renderee.pos.y, this->_present_buffer, renderee.parent->get_buffer());
     }
 
     auto psize = this->_present_buffer.size();

@@ -36,16 +36,15 @@ class Renderee;
 class Window{
 private:
     Buffer _present_buffer;
-    struct BufferData{
+    struct Renderees{
         Renderee* parent;
         Vector2<size_t> pos;
-        std::shared_ptr<Buffer> _buffer;
     };
-    std::vector<BufferData> _buffers;
+    std::vector<Renderees> _renderees;
 public:
     Window();
-    std::shared_ptr<Buffer> init_buffer(Renderee* parent, size_t w, size_t h, size_t x = 0, size_t y = 0);
-    void remove_buffer(Renderee* parent);
+    void bind_buffer(Renderee* parent, size_t x, size_t y);
+    void unbind_buffer(Renderee* parent);
     void render();
     Vector2<size_t> get_size();
     ~Window();
@@ -54,7 +53,8 @@ public:
 class Renderee{
 public:
     virtual void write() = 0;
-    virtual void   bind(Window& window) = 0;
+    virtual void   bind(Window& window, size_t x, size_t y) = 0;
     virtual void unbind(Window& window) = 0;
+    virtual Buffer& get_buffer() = 0;
 };
 #endif
