@@ -1,18 +1,25 @@
 #include <chrono>
 #include <thread>
 
+#include <system.hpp>
 #include <renderer.hpp>
 #include <progress_bar.hpp>
 
 
 int main() {
-    auto window = Window();
-    auto bar = ProgressBar(window.get_size().x);
+    mut window = Window();
+    mut bar = ProgressBar(24);
+
     bar.bind(window);
-    bar.set_per(0.1);
-    bar.write();
-    window.render();
+    bar.var_char = '#';
+    System sys;
+    sys.get_processes();
 
-    std::this_thread::sleep_for(std::chrono::duration<int>(1));
-
+    for(size_t i = 0; i <= 100; ++i){
+        sys.refresh();
+        float per = float(sys._max_mem - sys._free_mem) / sys._max_mem;
+        bar.set_per(per);
+        window.render();
+        std::this_thread::sleep_for(std::chrono::duration<float>(0.1));
+    }
 }

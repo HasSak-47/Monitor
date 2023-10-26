@@ -6,16 +6,12 @@
 #include <vector>
 #include <optional>
 
+#include "utils.hpp"
+
 class Renderee;
 class Renderer;
 class Buffer;
 
-template<typename T>
-struct Vector2{
-    T x, y;
-
-    Vector2(T _x, T _y):x(_x),y(_y){}
-};
 
 struct Unit{
     uint32_t bg[4];

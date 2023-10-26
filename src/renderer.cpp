@@ -6,7 +6,9 @@
 #include <optional>
 #include <renderer.hpp>
 
-Buffer::Buffer(){} Buffer::Buffer(size_t width, size_t height):
+Buffer::Buffer(){}
+
+Buffer::Buffer(size_t width, size_t height):
     data(std::make_unique<Unit[]>(width * height)),
     _width(width),
     _height(height)
@@ -33,6 +35,7 @@ Window::Window(){
     noecho();
     cbreak();
     start_color();
+    curs_set(0);
 
     size_t x {getmaxx(stdscr)};
     size_t y {getmaxy(stdscr)};
@@ -82,6 +85,7 @@ static void write_to_buffer(size_t x, size_t y, Buffer& dest, Buffer& src){
 
 void Window::render(){
     for(auto& buffer : this->_buffers){
+        buffer.parent->write();
         auto offs = buffer.pos;
         write_to_buffer(offs.x, offs.y, this->_present_buffer, *buffer._buffer);
     }
