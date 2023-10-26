@@ -2,3 +2,58 @@
 name="monitor"
 version="0.0.0"
 edition="0.0.0"
+
+[[todo]]
+name="display data"
+priority=0.8
+difficulty=0.2
+
+[[todo.sub_feature]]
+name="get system data"
+priority=0.4
+difficulty=0.3
+
+[[todo.sub_feature.sub_feature]]
+name="get cpu data"
+priority=0.4
+difficulty=0.2
+
+[[todo]]
+name="display widgets"
+priority=0.4
+difficulty=0.6
+
+[[todo.sub_feature]]
+name="display string"
+priority=0.4
+difficulty=0.1
+
+[[todo.sub_feature]]
+name="display integer"
+priority=0.4
+difficulty=0.1
+
+[[todo.sub_feature]]
+name="display float"
+priority=0.4
+difficulty=0.1
+
+[[done]]
+name="display progress bar widget"
+difficulty=0.4
+priority=0.3
+
+[[done]]
+name="get proc data"
+difficulty=0.4
+priority=0.4
+
+[[done.sub_feature]]
+name="get statm"
+difficulty=0.1
+priority=0.4
+
+[[done.sub_feature]]
+name="get stat"
+difficulty=0.1
+priority=0.4

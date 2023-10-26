@@ -4,9 +4,6 @@
 #include "renderer.hpp"
 #include <memory>
 
-enum class Opts: uint8_t {
-    Ends = 1,
-};
 
 class ProgressBar : public Renderee{
 private:
@@ -14,9 +11,13 @@ private:
     Buffer _buffer;
     float _per;
 public: 
-    Opts opts = (Opts)0;
-    ProgressBar(size_t len);
+    enum class Opts: uint8_t {
+        Ends = 1,
+    };
+    Opts opts = Opts::Ends;
     char var_char = '|';
+
+    ProgressBar(size_t len);
 
     void set_per(float p);
     void write() override;

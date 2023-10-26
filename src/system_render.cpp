@@ -10,7 +10,7 @@ Buffer & MemoryBar::get_buffer() {return this->_bar.get_buffer();}
 
 void MemoryBar::write(){
     // poll system
-    float p = 0.;
+    float p = 1. - (sys._free_mem / (float)sys._max_mem);
     _bar.set_per(p);
     _bar.write();
 }

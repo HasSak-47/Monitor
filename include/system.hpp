@@ -3,26 +3,56 @@
 
 #include <unistd.h>
 #include <stdint.h>
+#include <unordered_map>
 #include <vector>
 #include <string>
 
+
+class System;
+class Process;
+
 class Process{
-private:
-    pid_t _pid;
-    std::string name = "";
 public:
-    Process(pid_t pid);
-    void get_data();
+    struct _proc_stat{
+        pid_t pid;
+        std::string name;
+        char state;
+        pid_t parent_pid;
+        pid_t group_id;
+    };
+    struct _proc_statm{
+        size_t size;
+        size_t resident;
+        size_t shared;
+        size_t text;
+        size_t lib;
+        size_t data;
+        size_t dt;
+    };
+    _proc_stat  _stat;
+    _proc_statm _statm;
+    std::string _stat_path;
+    std::string _statm_path;
+    bool _functional = false;
+    Process(char* pid);
+    bool update();
+    bool func();
+
+    friend class System;
 };
 
+#include <map>
+
 class System{
+private:
+    std::vector<Process> _process;
 public:
     uint64_t _max_mem;
     uint64_t _cached_mem;
     uint64_t _free_mem;
-    std::vector<Process> get_processes();
+    std::vector<Process>& get_processes();
     System();
-    void refresh();
+    void update();
 };
 
 extern System sys;

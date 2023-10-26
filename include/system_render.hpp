@@ -17,4 +17,13 @@ public:
     Buffer & get_buffer() override;
 };
 
+class ProcsRender: public Renderee{
+    ProcsRender(std::vector<Process>& processes);
+
+    void bind(Window& window, size_t x, size_t y) override;
+    void unbind(Window& window) override;
+    void write() override;
+    Buffer & get_buffer() override;
+};
+
 #endif

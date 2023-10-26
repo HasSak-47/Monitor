@@ -5,6 +5,8 @@
 #define mut auto
 #define self (*this)
 
+#define in :
+
 template<typename T>
 struct Vector2{
     T x, y;
