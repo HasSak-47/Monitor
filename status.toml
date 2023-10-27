@@ -4,11 +4,6 @@ version="0.0.0"
 edition="0.0.0"
 
 [[todo]]
-name="Change Buffer to std::shared_ptr<Buffer>"
-priority=0.9
-difficulty=0.1
-
-[[todo]]
 name="display data"
 priority=0.8
 difficulty=0.2
@@ -62,3 +57,8 @@ priority=0.4
 name="get stat"
 difficulty=0.1
 priority=0.4
+
+[[done]]
+name="Change Buffer to std::shared_ptr<Buffer>"
+priority=0.2
+difficulty=0.1

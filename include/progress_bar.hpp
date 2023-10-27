@@ -7,8 +7,8 @@
 
 class ProgressBar : public Renderee{
 private:
+    std::shared_ptr<Buffer> _buffer;
     size_t _len;
-    Buffer _buffer;
     float _per;
 public: 
     enum class Opts: uint8_t {

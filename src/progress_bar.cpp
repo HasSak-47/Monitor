@@ -2,7 +2,7 @@
 #include <string>
 
 ProgressBar::ProgressBar(size_t len): _len(len){
-    self._buffer = Buffer(len);
+    self._buffer = std::make_shared<Buffer>(len);
 }
 
 void ProgressBar::write(){
@@ -13,11 +13,11 @@ void ProgressBar::write(){
         max = len;
     let min = ends ? 1 : 0;
     if(ends){
-        self._buffer.get(0, 0).value()->c = '[';
-        self._buffer.get(self._len - 1, 0).value()->c = ']';
+        self._buffer->get(0, 0).value()->c = '[';
+        self._buffer->get(self._len - 1, 0).value()->c = ']';
     }
     for(size_t i = 0; i < max; ++i){
-        this->_buffer.get(i + min, 0).value()->c = self.var_char;
+        this->_buffer->get(i + min, 0).value()->c = self.var_char;
     }
 }
 
@@ -28,5 +28,5 @@ void ProgressBar::set_per(float per){
 }
 
 Buffer& ProgressBar::get_buffer(){
-    return this->_buffer;
+    return *this->_buffer;
 }
