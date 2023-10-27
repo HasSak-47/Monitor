@@ -1,4 +1,5 @@
 #include <progress_bar.hpp>
+#include <string>
 
 ProgressBar::ProgressBar(size_t len): _len(len){
     self._buffer = Buffer(len);
@@ -18,7 +19,6 @@ void ProgressBar::write(){
     for(size_t i = 0; i < max; ++i){
         this->_buffer.get(i + min, 0).value()->c = self.var_char;
     }
-
 }
 
 #include <cmath>

@@ -86,7 +86,8 @@ void Window::render(){
     auto psize = this->_present_buffer.size();
     for(size_t i = 0; i < psize.x; ++i)
         for(size_t j = 0; j < psize.y; ++j){
-            if(char c = this->_present_buffer.get(i, j).value()-> c; isprint(c))
+            char c = 0;
+            if(isprint(c = this->_present_buffer.get(i, j).value()->c))
                 mvaddch(j, i, c);
             break;
         }
