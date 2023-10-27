@@ -10,12 +10,9 @@ private:
     size_t _len;
 public:
     std::string text;
-    TextLine();
+    TextLine(size_t len);
     void write() override;
-    void bind(Window& window, size_t x, size_t y) override;
-    void unbind(Window& window) override;
     Buffer& get_buffer() override;
-
 };
 
 #endif

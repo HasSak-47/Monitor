@@ -21,8 +21,6 @@ public:
 
     void set_per(float p);
     void write() override;
-    void bind(Window& window, size_t x, size_t y) override;
-    void unbind(Window& window) override;
     Buffer& get_buffer() override;
 };
 

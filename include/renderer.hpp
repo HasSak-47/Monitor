@@ -53,8 +53,8 @@ public:
 class Renderee{
 public:
     virtual void write() = 0;
-    virtual void   bind(Window& window, size_t x, size_t y) = 0;
-    virtual void unbind(Window& window) = 0;
+    virtual void bind(Window& window, size_t x, size_t y) { window.bind_buffer(this, x, y); }
+    virtual void unbind(Window& window) { window.unbind_buffer(this); };
     virtual Buffer& get_buffer() = 0;
 };
 #endif

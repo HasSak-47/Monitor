@@ -1,26 +1,23 @@
+#include <string>
 #include <thread>
 #include <iostream>
 
 #include <utils.hpp>
 #include <system.hpp>
-// #include <renderer.hpp>
+#include <renderer.hpp>
+#include <text_line.hpp>
 // #include <progress_bar.hpp>
 // #include <system_render.hpp>
 
 System sys;
 
 int main() {
-    // mut window = Window();
-    // mut bar = MemoryBar(20);
-    // bar.bind(window, 0, 0);
+    mut window = Window();
+    mut line = TextLine(20);
+    line.bind(window, 0, 0);
     for(size_t i = 0; i <= 1000; ++i){
-        sys.update();
-        // bar.write();
-        // window.render();
-        let procs = sys.get_processes();
-        for(let proc in procs){
-            // std::cout << proc._stat.pid << " : " << proc._stat.name << std::endl;
-        }
+        line.text = std::to_string(i);
+        window.render();
         std::this_thread::sleep_for(std::chrono::duration<float>(0.1));
     }
     std::this_thread::sleep_for(std::chrono::duration<float>(1.));

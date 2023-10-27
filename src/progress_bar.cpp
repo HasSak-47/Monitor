@@ -21,14 +21,6 @@ void ProgressBar::write(){
 
 }
 
-void ProgressBar::bind(Window& window, size_t x, size_t y){
-    window.bind_buffer(this, x, y);
-}
-
-void ProgressBar::unbind(Window& window){
-    window.unbind_buffer(this);
-}
-
 #include <cmath>
 
 void ProgressBar::set_per(float per){
