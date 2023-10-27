@@ -1,7 +1,3 @@
-monitor
-a.out
-settings.json
-*.o
 build/*
-*.json
 .github/**
+.cache

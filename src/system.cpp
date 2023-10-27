@@ -1,52 +1,119 @@
-#include <unistd.h>
-#include <cstddef>
-#include <set>
-#include <string>
-#include <vector>
+// c/c++ stuff
+#include <algorithm>
+#include <cctype>
+#include <cstdio>
+#include <iostream>
 #include <fstream>
+#include <optional>
+#include <string>
+#include <cstring>
 
-#include "process.h"
-#include "processor.h"
-#include "system.h"
+// unix stuff
+#include <dirent.h>
+#include <unistd.h>
 
-#include "linux_parser.h"
+// my stuff
+#include <utils.hpp>
+#include <system.hpp>
 
-using std::set;
-using std::size_t;
-using std::string;
-using std::vector;
+static bool is_process(struct dirent* file){
+    if(file->d_type != DT_DIR)
+        return false;
 
-// TODO: Return the system's CPU
-Processor& System::Cpu() { return cpu_; }
+    // not efficient
+    let len = strlen(file->d_name);
+    char* name = file->d_name;
+    if(std::all_of(name, name + len, isdigit))
+        return true;
 
-// TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { 
-  this->UpTime();
-  processes_.clear();
-  auto processes = LinuxParser::Pids();
-  for(auto& process : processes){
-    processes_.push_back(Process(process));
-  }
-
-  std::sort(processes_.begin(), processes_.end());
-
-  return processes_;
+    return false;
 }
 
-// TODO: Return the system's kernel identifier (string)
-std::string System::Kernel() { return LinuxParser::Kernel(); }
+bool Process::func(){
+    return self._functional;
+}
 
-// TODO: Return the system's memory utilization
-float System::MemoryUtilization() { return LinuxParser::MemoryUtilization(); }
+bool Process::update(){
+    mut stat_file  = std::ifstream(self._stat_path);
+    mut statm_file = std::ifstream(self._statm_path);
+    if(!stat_file.is_open() && !statm_file.is_open())
+        return false;
 
-// TODO: Return the operating system name
-std::string System::OperatingSystem() { return LinuxParser::OperatingSystem(); }
+    stat_file
+        >> self._stat.pid;
+    // i lov u c++ never change
+    mut buf = ' ';
+    while((buf = stat_file.get()) != EOF){
+        if(buf == ')')
+            break;
+        if(buf != '(')
+            self._stat.name += buf;
+    }
 
-// TODO: Return the number of processes actively running on the system
-int System::RunningProcesses() { return LinuxParser::RunningProcesses(); }
+    stat_file
+        >> self._stat.state
+        >> self._stat.parent_pid
+        >> self._stat.group_id;
 
-// TODO: Return the total number of processes on the system
-int System::TotalProcesses() { return LinuxParser::TotalProcesses(); }
+    statm_file
+        >> self._statm.size
+        >> self._statm.resident
+        >> self._statm.shared
+        >> self._statm.text
+        >> self._statm.lib
+        >> self._statm.data
+        >> self._statm.dt;
 
-// TODO: Return the number of seconds since the system started running
-long int System::UpTime() { return LinuxParser::UpTime(); }
+    return true;
+}
+
+Process::Process(char* pid) {
+    self._stat_path = std::string("/proc/") + pid + "/stat";
+    self._statm_path = std::string("/proc/") + pid + "/statm";
+    self.update();
+}
+
+std::vector<Process>& System::get_processes(){
+    DIR* dir = opendir("/proc");
+    struct dirent* dirent;
+
+    while(((dirent) = readdir(dir)) != nullptr){
+        if(!is_process(dirent))
+            continue;
+
+        let pid = std::stoi(dirent->d_name);
+        mut proc = std::find_if(self._process.begin(), self._process.end(),
+            [&](Process& x){ return x._stat.pid == pid; }
+        );
+
+        if(proc != self._process.end()){
+            let alive = proc->update();
+            if(!alive)
+                self._process.erase(proc);
+        }
+        else
+            self._process.push_back(Process(dirent->d_name));
+    }
+
+    return self._process;
+}
+
+#include <iostream>
+#include <map>
+
+void System::update(){
+    self.get_processes();
+    std::ifstream file("/proc/meminfo");
+    std::string name, type;
+    std::map<std::string, size_t> map;
+    size_t len;
+    while(file >> name >> len >> type)
+        map[name] = len;
+
+    _max_mem  = map["MemTotal:"];
+    _free_mem = map["MemFree:"];
+}
+
+System::System(){
+    self.update();
+}
