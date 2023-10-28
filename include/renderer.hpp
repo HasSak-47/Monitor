@@ -14,8 +14,8 @@ class Buffer;
 
 struct Color{
     union {
-        struct {uint32_t r; uint32_t g; uint32_t b; uint32_t a; };
-        struct {uint32_t c[4]; };
+        struct { uint32_t r; uint32_t g; uint32_t b; uint32_t a; };
+        struct { uint32_t c[4]; };
     };
 
     Color(){}
