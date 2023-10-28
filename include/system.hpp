@@ -3,6 +3,7 @@
 
 #include <unistd.h>
 #include <stdint.h>
+#include <cstdint>
 #include <unordered_map>
 #include <vector>
 #include <string>
@@ -48,8 +49,11 @@ private:
     std::vector<Process> _process;
 public:
     uint64_t _max_mem;
-    uint64_t _cached_mem;
     uint64_t _free_mem;
+    uint64_t _av_mem;
+
+    uint64_t _cached_mem;
+    uint64_t _buffer_mem;
     std::vector<Process>& get_processes();
     System();
     void update();

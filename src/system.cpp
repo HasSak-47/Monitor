@@ -110,8 +110,11 @@ void System::update(){
     while(file >> name >> len >> type)
         map[name] = len;
 
-    _max_mem  = map["MemTotal:"];
-    _free_mem = map["MemFree:"];
+    self._max_mem  = map["MemTotal:"];
+    self._free_mem = map["MemFree:"];
+    self._av_mem = map["MemAvailable:"];
+    self._cached_mem = map["Cached:"];
+    self._cached_mem = map["Buffers:"];
 }
 
 System::System(){

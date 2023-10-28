@@ -16,12 +16,21 @@ public:
     };
     Opts opts = Opts::Ends;
     char var_char = '|';
+    Color color = {
+        {0,0,0,0},
+        {255,255,255,255}
+    }; 
+
 
     ProgressBar(size_t len);
+    ProgressBar(size_t len, std::shared_ptr<Buffer> buffer);
+    ProgressBar(){}
 
     void set_per(float p);
     void write() override;
     Buffer& get_buffer() override;
+
+    std::shared_ptr<Buffer> get_shared_buffer() ;
 };
 
 #endif

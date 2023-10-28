@@ -12,10 +12,13 @@ class Renderee;
 class Renderer;
 class Buffer;
 
-
-struct Unit{
+struct Color{
     uint32_t bg[4];
     uint32_t fg[4];
+};
+
+struct Unit{
+    Color colors;
     char32_t c;
 };
 

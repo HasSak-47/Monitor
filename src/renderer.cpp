@@ -87,8 +87,10 @@ void Window::render(){
     for(size_t i = 0; i < psize.x; ++i)
         for(size_t j = 0; j < psize.y; ++j){
             char c = 0;
-            if(isprint(c = this->_present_buffer.get(i, j).value()->c))
+            if(isprint(c = this->_present_buffer.get(i, j).value()->c)){
+                init_color(short, short, short, short)
                 mvaddch(j, i, c);
+            }
             break;
         }
     refresh();

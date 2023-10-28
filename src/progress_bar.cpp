@@ -1,8 +1,13 @@
+#include <memory>
 #include <progress_bar.hpp>
 #include <string>
 
 ProgressBar::ProgressBar(size_t len): _len(len){
     self._buffer = std::make_shared<Buffer>(len);
+}
+
+ProgressBar::ProgressBar(size_t len, std::shared_ptr<Buffer> buffer): _len(len){
+    self._buffer = buffer;
 }
 
 void ProgressBar::write(){
@@ -17,7 +22,9 @@ void ProgressBar::write(){
         self._buffer->get(self._len - 1, 0).value()->c = ']';
     }
     for(size_t i = 0; i < max; ++i){
-        this->_buffer->get(i + min, 0).value()->c = self.var_char;
+        mut& v = *this->_buffer->get(i + min, 0).value();
+        v.c = self.var_char;
+        v.colors = self.color;
     }
 }
 
@@ -29,4 +36,8 @@ void ProgressBar::set_per(float per){
 
 Buffer& ProgressBar::get_buffer(){
     return *this->_buffer;
+}
+
+std::shared_ptr<Buffer> ProgressBar::get_shared_buffer(){
+    return this->_buffer;
 }
