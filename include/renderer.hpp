@@ -13,12 +13,24 @@ class Renderer;
 class Buffer;
 
 struct Color{
-    uint32_t bg[4];
-    uint32_t fg[4];
+    union {
+        struct {uint32_t r; uint32_t g; uint32_t b; uint32_t a; };
+        struct {uint32_t c[4]; };
+    };
+
+    Color(){}
+
+    Color(uint32_t r,uint32_t g,uint32_t b,uint32_t a){
+        self.r = r; self.g = g; self.b = b; self.a = a;
+    }
+};
+
+struct UnitColor{
+    Color background, foreground;
 };
 
 struct Unit{
-    Color colors;
+    UnitColor colors;
     char32_t c;
 };
 

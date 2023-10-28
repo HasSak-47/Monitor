@@ -15,10 +15,10 @@ char text[] = "test text with a lot of chars!";
 
 int main() {
     mut window = Window();
-    mut bar = MemoryBar(40);
+    mut bar = ProgressBar(40);
     bar.bind(window, 0, 0);
     for(size_t i = 0; i <= 1000; ++i){
-        sys.update();
+        bar.set_per(10);
         window.render();
         std::this_thread::sleep_for(std::chrono::duration<float>(0.1));
     }

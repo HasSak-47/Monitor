@@ -11,11 +11,15 @@ MemoryBar::MemoryBar(size_t len):
     self._buffers = ProgressBar(len, self.get_shared_buffer());
     self._shared = ProgressBar(len, self.get_shared_buffer());
     self._chached = ProgressBar(len, self.get_shared_buffer());
-    self._chached.color = Color {
+    self._chached.color = UnitColor {
         {0,0,0,0},
         {255,255,0,0},
     };
 }
+
+#ifdef __DEBUG_MEM_BAR__
+#endif
+
 
 void MemoryBar::write(){
     float total_cached = sys._cached_mem / float(sys._max_mem);

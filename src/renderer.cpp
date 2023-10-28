@@ -86,10 +86,12 @@ void Window::render(){
     auto psize = this->_present_buffer.size();
     for(size_t i = 0; i < psize.x; ++i)
         for(size_t j = 0; j < psize.y; ++j){
-            char c = 0;
-            if(isprint(c = this->_present_buffer.get(i, j).value()->c)){
-                init_color(short, short, short, short)
-                mvaddch(j, i, c);
+            let val = self._present_buffer.get(i, j).value();
+            if(isprint(val->c)){
+                let& bg = val->colors.background;
+                let& fg = val->colors.foreground;
+                init_color(COLOR_WHITE, fg.r, fg.g, fg.b);
+                mvaddch(j, i, val->c);
             }
             break;
         }

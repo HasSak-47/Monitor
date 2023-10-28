@@ -16,9 +16,9 @@ public:
     };
     Opts opts = Opts::Ends;
     char var_char = '|';
-    Color color = {
-        {0,0,0,0},
-        {255,255,255,255}
+    UnitColor color = {
+        {0,0,0,0 },
+        {1000,1000,1000,1000}
     }; 
 
 
