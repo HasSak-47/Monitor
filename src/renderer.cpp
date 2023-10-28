@@ -70,15 +70,14 @@ static void write_to_buffer(size_t x, size_t y, Buffer& dest, Buffer& src){
         for(size_t j = 0; j < s_size.y; ++j){
             auto dest_o = dest.get(i + x, j + y);
             auto  src_o =  src.get(i, j);
-            if(dest_o.has_value() && src_o.has_value()){
+            if(dest_o.has_value() && src_o.has_value())
                 *dest_o.value() = *src_o.value();
-            }
         }
     }
 }
 
 void Window::render(){
-    for(auto& renderee : this->_renderees){
+    for(mut& renderee : this->_renderees){
         renderee.parent->write();
         write_to_buffer(renderee.pos.x, renderee.pos.y, this->_present_buffer, renderee.parent->get_buffer());
     }
@@ -90,10 +89,16 @@ void Window::render(){
             if(isprint(val->c)){
                 let& bg = val->colors.background;
                 let& fg = val->colors.foreground;
-                init_color(COLOR_WHITE, fg.r, fg.g, fg.b);
+                // std::cout << "\x1b[38;2;"
+                //     << fg.r << ','
+                //     << fg.g << ','
+                //     << fg.b;
+                // std::cout << "\x1b[48;2;"
+                //     << bg.r << ','
+                //     << bg.g << ','
+                //     << bg.b;
                 mvaddch(j, i, val->c);
             }
-            break;
         }
     refresh();
 }

@@ -14,13 +14,13 @@ class Buffer;
 
 struct Color{
     union {
-        struct { uint32_t r; uint32_t g; uint32_t b; uint32_t a; };
-        struct { uint32_t c[4]; };
+        struct { short r; short g; short b; short a; };
+        struct { short c[4]; };
     };
 
     Color(){}
 
-    Color(uint32_t r,uint32_t g,uint32_t b,uint32_t a){
+    Color(short r,short g,short b,short a){
         self.r = r; self.g = g; self.b = b; self.a = a;
     }
 };

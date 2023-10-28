@@ -22,8 +22,11 @@ void ProgressBar::write(){
         self._buffer->get(self._len - 1, 0).value()->c = ']';
     }
     for(size_t i = 0; i < max; ++i){
-        mut& v = *this->_buffer->get(i + min, 0).value();
+        mut& v = *self._buffer->get(i + min, 0).value();
         v.c = self.var_char;
+    }
+    for(size_t i = 0; i < self._len; ++i){
+        mut& v = *self._buffer->get(i, 0).value();
         v.colors = self.color;
     }
 }
