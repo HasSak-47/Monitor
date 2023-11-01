@@ -1,5 +1,5 @@
 
-#include <DividedBar.hpp>
+#include <divided_bar.hpp>
 
 DividedBar::DividedBar(size_t len, size_t segments):
 ProgressBar(len){

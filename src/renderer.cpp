@@ -6,6 +6,17 @@
 #include <optional>
 #include <renderer.hpp>
 
+const int Color::max_val = 1000;
+
+const Unit Unit::default_unit = {
+    {{},{
+            Color::max_val,
+            Color::max_val,
+            Color::max_val,
+            Color::max_val
+        }}, ' ',
+};
+
 Buffer::Buffer(){}
 
 Buffer::Buffer(size_t width, size_t height):
@@ -29,7 +40,6 @@ std::optional<Unit*> Buffer::get(size_t x, size_t y){
     }
     return &this->data[x + (y * w)];
 }
-
 Window::Window(){
     initscr();
     noecho();
@@ -89,14 +99,7 @@ void Window::render(){
             if(isprint(val->c)){
                 let& bg = val->colors.background;
                 let& fg = val->colors.foreground;
-                // std::cout << "\x1b[38;2;"
-                //     << fg.r << ','
-                //     << fg.g << ','
-                //     << fg.b;
-                // std::cout << "\x1b[48;2;"
-                //     << bg.r << ','
-                //     << bg.g << ','
-                //     << bg.b;
+                init_color(COLOR_WHITE, fg.r, fg.g, fg.b);
                 mvaddch(j, i, val->c);
             }
         }
@@ -107,3 +110,8 @@ Vector2<size_t> Window::get_size() {
     return this->_present_buffer.size();
 }
 
+
+void Buffer::clear(){
+    for(size_t i = 0; i < _width * _height; ++i)
+        this->data[i] = Unit::default_unit;
+}

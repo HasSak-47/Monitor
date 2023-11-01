@@ -10,7 +10,6 @@
 #include <system_render.hpp>
 
 System sys;
-
 char text[] = "test text with a lot of chars!";
 
 int main() {
@@ -19,11 +18,15 @@ int main() {
     mut bar2 = ProgressBar(40);
     bar.bind(window, 0, 0);
     bar2.bind(window, 0, 1);
+    bar.color.foreground.g = 0;
+    bar.color.foreground.b = 0;
+    bar2.color.foreground.g = 0;
+    bar2.color.foreground.b = 0;
     for(size_t i = 0; i <= 1000; ++i){
+        bar.color.foreground.g = i;
+        bar2.color.foreground.g = 1000 - i;
         bar.set_per(i / 1000.);
-        bar2.set_per(i / 1000.);
-        bar.color.foreground.b = i;
-        bar2.color.foreground.b = 1000 - i;
+        bar2.set_per((1000 -i) / 1000.);
         window.render();
         std::this_thread::sleep_for(std::chrono::duration<float>(0.01));
     }

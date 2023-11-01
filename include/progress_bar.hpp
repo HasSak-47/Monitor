@@ -18,7 +18,11 @@ public:
     char var_char = '|';
     UnitColor color = {
         {0,0,0,0 },
-        {255,255,255,255}
+        {
+            (short)Color::max_val,
+            (short)Color::max_val,
+            (short)Color::max_val,
+            (short)Color::max_val}
     }; 
 
 

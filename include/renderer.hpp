@@ -12,6 +12,7 @@ class Renderee;
 class Renderer;
 class Buffer;
 
+
 struct Color{
     union {
         struct { short r; short g; short b; short a; };
@@ -23,6 +24,8 @@ struct Color{
     Color(short r,short g,short b,short a){
         self.r = r; self.g = g; self.b = b; self.a = a;
     }
+
+    static const int max_val;
 };
 
 struct UnitColor{
@@ -32,6 +35,8 @@ struct UnitColor{
 struct Unit{
     UnitColor colors;
     char32_t c;
+
+    static const Unit default_unit;
 };
 
 class Buffer{
@@ -44,6 +49,8 @@ public:
     std::optional<Unit*> get(size_t x, size_t y);
     Vector2<size_t> size();
     size_t len();
+
+    void clear();
 };
 
 class Renderee;
