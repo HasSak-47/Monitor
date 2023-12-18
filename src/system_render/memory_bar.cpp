@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include <system_render.hpp>
+#include <system_render/memory_bar.hpp>
 #include <progress_bar.hpp>
-
 
 MemoryBar::MemoryBar(size_t len):
     ProgressBar(len)

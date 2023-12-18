@@ -1,9 +1,9 @@
-#ifndef __SYSTEM_RENDER_HPP__
-#define __SYSTEM_RENDER_HPP__
+#ifndef __MEMORY_BAR_HPP__
+#define __MEMORY_BAR_HPP__
 
-#include "progress_bar.hpp"
-#include "renderer.hpp"
-#include "system.hpp"
+#include "../progress_bar.hpp"
+#include "../renderer.hpp"
+#include "../system.hpp"
 
 class MemoryBar : public ProgressBar{
 private:

@@ -8,7 +8,7 @@
 #include <renderer.hpp>
 #include <text_line.hpp>
 #include <progress_bar.hpp>
-#include <system_render.hpp>
+#include <system_render/memory_bar.hpp>
 
 System sys;
 
