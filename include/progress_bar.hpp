@@ -16,15 +16,7 @@ public:
     };
     Opts opts = Opts::Ends;
     char var_char = '|';
-    UnitColor color = {
-        {0,0,0,0 },
-        {
-            (short)Color::max_val,
-            (short)Color::max_val,
-            (short)Color::max_val,
-            (short)Color::max_val}
-    }; 
-
+	UnitColor colors = UnitColor(Color::White);
 
     ProgressBar(size_t len);
     ProgressBar(size_t len, std::shared_ptr<Buffer> buffer);

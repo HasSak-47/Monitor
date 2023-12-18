@@ -8,28 +8,40 @@
 
 #include "utils.hpp"
 
+class Window;
 class Renderee;
 class Renderer;
 class Buffer;
 
+class Color{
+	size_t color_id = 0;
 
-struct Color{
-    union {
-        struct { short r; short g; short b; short a; };
-        struct { short c[4]; };
-    };
+public:
+	static const Color Black;
+	static const Color Red;
+	static const Color Green;
+	static const Color Yellow;
+	static const Color Blue;
+	static const Color Cyan;
+	static const Color Magenta;
+	static const Color White;
+	Color();
+	Color(size_t id);
 
-    Color(){}
-
-    Color(short r,short g,short b,short a){
-        self.r = r; self.g = g; self.b = b; self.a = a;
-    }
-
-    static const int max_val;
+	size_t get_color();
 };
 
-struct UnitColor{
-    Color background, foreground;
+class UnitColor{
+private:
+	static std::vector<size_t> _colors;
+public:
+    Color foreground, background;
+
+	void set_color();
+	void unset_color();
+	void init_color();
+	UnitColor(Color fg, Color bg = Color::Black);
+	UnitColor();
 };
 
 struct Unit{

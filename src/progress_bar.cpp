@@ -11,11 +11,11 @@ ProgressBar::ProgressBar(size_t len, std::shared_ptr<Buffer> buffer): _len(len){
 }
 
 void ProgressBar::write(){
-    self._buffer->clear();
+	/*
     for(size_t i = 0; i < self._len; ++i){
         mut& v = *self._buffer->get(i, 0).value();
-        v.colors = self.color;
     }
+	*/
 
     let ends = ((int)self.opts & (int)Opts::Ends) != 0;
     let len = this->_len - 2 * ends; 
@@ -30,6 +30,7 @@ void ProgressBar::write(){
     for(size_t i = 0; i < max; ++i){
         mut& v = *self._buffer->get(i + min, 0).value();
         v.c = self.var_char;
+        v.colors = self.colors;
     }
 }
 

@@ -114,7 +114,7 @@ void System::update(){
     self._free_mem = map["MemFree:"];
     self._av_mem = map["MemAvailable:"];
     self._cached_mem = map["Cached:"];
-    self._cached_mem = map["Buffers:"];
+    self._buffer_mem = map["Buffers:"];
 }
 
 System::System(){

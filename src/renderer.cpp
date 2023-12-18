@@ -6,16 +6,52 @@
 #include <optional>
 #include <renderer.hpp>
 
-const int Color::max_val = 1000;
+Color::Color(size_t id): color_id(id){}
+Color::Color(): color_id(0){}
+
+const Color Color::Black(0);
+const Color Color::Red(1);
+const Color Color::Green(2);
+const Color Color::Yellow(3);
+const Color Color::Blue(4);
+const Color Color::Cyan(5);
+const Color Color::Magenta(6);
+const Color Color::White(7);
+
+std::vector<size_t> UnitColor::_colors;
+
+size_t Color::get_color(){
+	return this->color_id;
+}
 
 const Unit Unit::default_unit = {
-    {{},{
-            Color::max_val,
-            Color::max_val,
-            Color::max_val,
-            Color::max_val
-        }}, ' ',
+	{ Color::White, Color::Black, },
+	' '
 };
+
+void UnitColor::set_color(){
+	let f = self.foreground.get_color();
+	let b = self.background.get_color();
+	attron(COLOR_PAIR(b * 8 + f));
+}
+
+void UnitColor::unset_color(){
+	let f = self.foreground.get_color();
+	let b = self.foreground.get_color();
+	attroff(COLOR_PAIR(b * 8 + f));
+}
+
+void UnitColor::init_color(){
+}
+
+UnitColor::UnitColor(Color fg, Color bg):
+	foreground(fg),
+	background(bg)
+{
+	init_color();
+}
+
+UnitColor::UnitColor(): UnitColor(Color::White, Color::Black) { }
 
 Buffer::Buffer(){}
 
@@ -42,9 +78,16 @@ std::optional<Unit*> Buffer::get(size_t x, size_t y){
 }
 Window::Window(){
     initscr();
+    start_color();
+	// this is a hack
+	for(size_t ij = 0; ij < 64; ++ij){
+		let i = ij % 8;
+		let j = ij / 8;
+		init_pair(ij, i, j);
+	}
+
     noecho();
     cbreak();
-    start_color();
     curs_set(0);
 
     size_t x {getmaxx(stdscr)};
@@ -96,10 +139,9 @@ void Window::render(){
     for(size_t i = 0; i < psize.x; ++i)
         for(size_t j = 0; j < psize.y; ++j){
             let val = self._present_buffer.get(i, j).value();
+			UnitColor(Color::White).set_color();
             if(isprint(val->c)){
-                let& bg = val->colors.background;
-                let& fg = val->colors.foreground;
-                init_color(COLOR_WHITE, fg.r, fg.g, fg.b);
+				val->colors.set_color();
                 mvaddch(j, i, val->c);
             }
         }
