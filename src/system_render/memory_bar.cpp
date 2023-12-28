@@ -3,6 +3,9 @@
 #include <system_render/memory_bar.hpp>
 #include <progress_bar.hpp>
 
+using SystemRender::MemoryBar;
+using namespace Sys;
+
 MemoryBar::MemoryBar(size_t len):
     ProgressBar(len)
 {

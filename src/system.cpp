@@ -4,7 +4,6 @@
 #include <cstdio>
 #include <iostream>
 #include <fstream>
-#include <optional>
 #include <string>
 #include <cstring>
 
@@ -15,6 +14,7 @@
 // my stuff
 #include <utils.hpp>
 #include <system.hpp>
+
 
 static bool is_process(struct dirent* file){
     if(file->d_type != DT_DIR)
@@ -28,6 +28,8 @@ static bool is_process(struct dirent* file){
 
     return false;
 }
+
+using namespace Sys;
 
 bool Process::func(){
     return self._functional;

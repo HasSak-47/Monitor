@@ -1,64 +1,29 @@
 [project]
-name="monitor"
-version="0.0.0"
-edition="0.0.0"
+name = "monitor"
+version = "0.0.0"
+edition = "0.1.0"
 
 [[todo]]
-name="display data"
-priority=0.8
-difficulty=0.2
-
-[[todo.sub_feature]]
-name="get system data"
-priority=0.4
-difficulty=0.3
-
-[[todo.sub_feature.sub_feature]]
-name="get cpu data"
-priority=0.4
-difficulty=0.2
+name = "display data"
+priority = 0.800000011920929
+difficulty = 0.20000000298023224
 
 [[todo]]
-name="display widgets"
-priority=0.4
-difficulty=0.6
-
-[[todo.sub_feature]]
-name="display string"
-priority=0.4
-difficulty=0.1
-
-[[todo.sub_feature]]
-name="display integer"
-priority=0.4
-difficulty=0.1
-
-[[todo.sub_feature]]
-name="display float"
-priority=0.4
-difficulty=0.1
+name = "display widgets"
+priority = 0.4000000059604645
+difficulty = 0.6000000238418579
 
 [[done]]
-name="display progress bar widget"
-difficulty=0.4
-priority=0.3
+name = "display progress bar widget"
+priority = 0.30000001192092896
+difficulty = 0.4000000059604645
 
 [[done]]
-name="get proc data"
-difficulty=0.4
-priority=0.4
-
-[[done.sub_feature]]
-name="get statm"
-difficulty=0.1
-priority=0.4
-
-[[done.sub_feature]]
-name="get stat"
-difficulty=0.1
-priority=0.4
+name = "get proc data"
+priority = 0.4000000059604645
+difficulty = 0.4000000059604645
 
 [[done]]
-name="Change Buffer to std::shared_ptr<Buffer>"
-priority=0.2
-difficulty=0.1
+name = "Change Buffer to std::shared_ptr<Buffer>"
+priority = 0.20000000298023224
+difficulty = 0.10000000149011612

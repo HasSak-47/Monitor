@@ -4,10 +4,10 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <cstdint>
-#include <unordered_map>
 #include <vector>
 #include <string>
 
+namespace Sys{
 
 class System;
 class Process;
@@ -42,8 +42,6 @@ public:
     friend class System;
 };
 
-#include <map>
-
 class System{
 private:
     std::vector<Process> _process;
@@ -60,5 +58,7 @@ public:
 };
 
 extern System sys;
+
+}
 
 #endif // __PROCESS_HPP__
