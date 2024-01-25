@@ -1,8 +1,8 @@
 #include <curses.h>
-#include <string>
 #include <thread>
-#include <iostream>
+#include <fstream>
 
+#include <logger.hpp>
 #include <utils.hpp>
 #include <system.hpp>
 #include <renderer.hpp>
@@ -21,12 +21,9 @@ void delay(float seconds){
 }
 
 int main() {
-    mut window = Window();
-	SystemRender::MemoryBar bar(100);
-	bar.bind(window, 0, 0);
+	mut out_file = std::ofstream("test_file.txt");
+	mut logger = logs::Logger(std::move(out_file));
 
-	for(size_t i = 0; i <= 100; ++i){
-		window.render();
-		delay(0.1);
-	}
+	logger.log("test string % % %\n", 1, 2.0 ,3);
+	logger.log("test string");
 }

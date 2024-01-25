@@ -11,12 +11,6 @@ ProgressBar::ProgressBar(size_t len, std::shared_ptr<Buffer> buffer): _len(len){
 }
 
 void ProgressBar::write(){
-	/*
-    for(size_t i = 0; i < self._len; ++i){
-        mut& v = *self._buffer->get(i, 0).value();
-    }
-	*/
-
     let ends = ((int)self.opts & (int)Opts::Ends) != 0;
     let len = this->_len - 2 * ends; 
     mut max = size_t(this->_per * len);

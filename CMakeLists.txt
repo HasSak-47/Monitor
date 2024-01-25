@@ -3,6 +3,7 @@ project(monitor)
 
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIRS})
+SET(CMAKE_CXX_STANDAR 20)
 
 include_directories(include)
 file(GLOB_RECURSE SOURCES "src/*.cpp")

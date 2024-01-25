@@ -19,5 +19,4 @@ struct Vector2{
 };
 
 
-
 #endif
