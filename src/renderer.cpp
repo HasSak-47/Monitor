@@ -79,6 +79,7 @@ std::optional<Unit*> Buffer::get(size_t x, size_t y){
 Window::Window(){
     initscr();
     start_color();
+	timeout(1);
 	// this is a hack
 	for(size_t ij = 0; ij < 64; ++ij){
 		let i = ij % 8;
@@ -100,6 +101,9 @@ Window::Window(){
 Window::~Window(){
     endwin();
 }
+
+int Window::get_input(){ return getch(); }
+char Window::get_char(){ return (char)get_input(); }
 
 void Window::bind_buffer(Renderee* parent, size_t x, size_t y){
     this->_renderees.push_back(Renderees{parent, {x, y}});
@@ -152,8 +156,13 @@ Vector2<size_t> Window::get_size() {
     return this->_present_buffer.size();
 }
 
+void Window::clear(){
+	self._present_buffer.clear();
+}
+
 
 void Buffer::clear(){
     for(size_t i = 0; i < _width * _height; ++i)
         this->data[i] = Unit::default_unit;
 }
+

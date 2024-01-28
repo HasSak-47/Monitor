@@ -1,6 +1,5 @@
 #ifndef __RENDERER_HPP__
 #define __RENDERER_HPP__
-#include <cstdint>
 #include <memory>
 #include <vector>
 #include <optional>
@@ -79,7 +78,11 @@ public:
     void bind_buffer(Renderee* parent, size_t x, size_t y);
     void unbind_buffer(Renderee* parent);
     void render();
+	void clear();
     Vector2<size_t> get_size();
+
+	int get_input();
+	char get_char();
     ~Window();
 };
 

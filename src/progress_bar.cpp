@@ -1,6 +1,5 @@
 #include <memory>
 #include <progress_bar.hpp>
-#include <string>
 
 ProgressBar::ProgressBar(size_t len): _len(len){
     self._buffer = std::make_shared<Buffer>(len);
@@ -27,8 +26,6 @@ void ProgressBar::write(){
         v.colors = self.colors;
     }
 }
-
-#include <cmath>
 
 void ProgressBar::set_per(float per){
     this->_per = per;
