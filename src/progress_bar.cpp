@@ -1,3 +1,4 @@
+/*
 #include <memory>
 #include <progress_bar.hpp>
 
@@ -38,3 +39,4 @@ Buffer& ProgressBar::get_buffer(){
 std::shared_ptr<Buffer> ProgressBar::get_shared_buffer(){
     return this->_buffer;
 }
+*/

@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 
 #include <system_render/memory_bar.hpp>
@@ -37,4 +38,4 @@ void MemoryBar::write(){
 	self._used.set_per(total_used - total_buffer);
 	self._used.write();
 }
-
+*/

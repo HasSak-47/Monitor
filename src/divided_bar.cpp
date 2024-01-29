@@ -1,4 +1,5 @@
 
+/*
 #include <divided_bar.hpp>
 
 DividedBar::DividedBar(size_t len, size_t segments):
@@ -18,3 +19,4 @@ void DividedBar::set_pers(std::vector<float> pers){
         total -= pers[i];
     }
 }
+*/

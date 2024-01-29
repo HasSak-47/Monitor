@@ -1,3 +1,4 @@
+/*
 #include <algorithm>
 #include <text_line.hpp>
 
@@ -13,3 +14,4 @@ void TextLine::write(){
 Buffer& TextLine::get_buffer(){
     return *self._buffer;
 }
+*/
