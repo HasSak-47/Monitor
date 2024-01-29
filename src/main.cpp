@@ -1,4 +1,6 @@
 #include <curses.h>
+#include <iostream>
+#include <iterator>
 #include <string>
 #include <thread>
 #include <fstream>
@@ -10,6 +12,7 @@
 #include <text_line.hpp>
 #include <progress_bar.hpp>
 #include <system_render/memory_bar.hpp>
+#include "render/render.hpp"
 
 namespace Sys{
 	System sys;
@@ -24,7 +27,6 @@ void delay(float seconds){
 int main() {
 	mut out_file = std::ofstream("../log_file.txt");
 	mut logger = logs::Logger(std::move(out_file));
-
 
 	return 0;
 }
