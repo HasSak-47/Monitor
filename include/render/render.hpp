@@ -36,9 +36,14 @@ class Buffer{
 private:
 	std::shared_ptr<Slice[]> _buffer;
 public:
+	Buffer() {};
 	Buffer(size_t x, size_t y = 1);
-
 	Unit& get(size_t x, size_t y = 0);
+
+	void get_subbuffer(
+		size_t x, size_t y,
+		size_t w, size_t h
+	);
 };
 
 }

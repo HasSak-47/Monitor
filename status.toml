@@ -5,25 +5,35 @@ edition = "0.1.0"
 
 [[todo]]
 name = "display data"
-priority = 0.800000011920929
-difficulty = 0.20000000298023224
+status = ""
+description = ""
+priority = 8
+difficulty = 2
 
 [[todo]]
 name = "display widgets"
-priority = 0.4000000059604645
-difficulty = 0.6000000238418579
+status = ""
+description = ""
+priority = 4
+difficulty = 6
 
 [[done]]
 name = "display progress bar widget"
-priority = 0.30000001192092896
-difficulty = 0.4000000059604645
+status = ""
+description = ""
+priority = 3
+difficulty = 4
 
 [[done]]
 name = "get proc data"
-priority = 0.4000000059604645
-difficulty = 0.4000000059604645
+status = ""
+description = ""
+priority = 4
+difficulty = 4
 
 [[done]]
 name = "Change Buffer to std::shared_ptr<Buffer>"
-priority = 0.20000000298023224
-difficulty = 0.10000000149011612
+status = ""
+description = ""
+priority = 2
+difficulty = 1

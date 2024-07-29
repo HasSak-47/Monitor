@@ -2,12 +2,14 @@
 #include <render/window.hpp>
 
 using namespace Render;
-/*
 
-Window::Window(){
+Window::Window() {
 	initscr();
 	cbreak();
 	noecho();
+
+	int x = getmaxx(stdscr), y = getmaxy(stdscr);
+	this->_render_buffer = Buffer(x, y);
 }
 
 Window::~Window(){
@@ -17,6 +19,10 @@ Window::~Window(){
 }
 
 void Window::render(){
+	this->clear();
+	for(auto& renderee : this->_renderees){
+		renderee->write(this->_render_buffer);
+	}
+
 
 }
-*/

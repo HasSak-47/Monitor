@@ -7,8 +7,8 @@ namespace Render{
 
 class Renderer{
 public:
+	virtual void queue(Renderee* render) = 0;
 	virtual void render() = 0;
-	virtual void bind(Renderee* renderee) = 0;
 	virtual void clear() = 0;
 };
 
