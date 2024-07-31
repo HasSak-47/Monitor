@@ -1,47 +1,69 @@
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <render/render.hpp>
 
 using namespace Render;
 
-Slice::Slice(size_t len) : _slice(
-	std::shared_ptr<Unit[]>(new Unit[len])
-){
-	this->_end = len;
+Slice::Slice(size_t len):
+	_slice(std::make_unique<Unit[]>(len)),
+	start(0),
+	end(len),
+	width(len)
+{ }
+
+Slice::Slice(const Slice& other):
+	_slice( other._slice),
+	start(other.start),
+	end(other.end),
+	width(other.width)
+{ }
+
+Slice Slice::get_subslice(size_t start, size_t width){
+	Slice copy = *this;
+	copy.start = this->start + start;
+	copy.end   = std::min(this->start + width, this->end);
+
+	return copy;
 }
 
-Slice::Slice(const Slice& slice) : _slice(slice._slice){
-	this->_beg = slice._beg;
-	this->_end = slice._end;
-}
+Buffer::Buffer(){}
 
-Slice& Slice::operator=(const Slice& slice){
-	this->_slice = slice._slice;
-	this->_end = slice._end;
-	this->_beg = slice._beg;
+Buffer::Buffer(size_t width, size_t height){
+	this->_buffer.reserve(width);
+	this->_width = width;
+	this->_height = height;
 
-	return *this;
-}
-
-Slice Slice::get_subslice(size_t beg, size_t end){
-	Slice new_slice = Slice(*this);
-	new_slice._beg = beg;
-	new_slice._end = end;
-
-	return new_slice;
-}
-
-Unit& Slice::operator[](size_t index){
-	return _slice[this->_beg + index];
-}
-
-Buffer::Buffer(size_t x, size_t y){
-	this->_buffer = std::shared_ptr<Slice[]>(new Slice[y]);
-	for(size_t i = 0; i < y; ++i){
-		this->_buffer[i] = Slice(x);
+	for(size_t i = 0; i < width; ++i){
+		this->_buffer.push_back(Slice(height));
 	}
 }
 
+// static
+Buffer Buffer::_init_empty(size_t width, size_t height){
+	Buffer empty;
+	empty._buffer.reserve(width);
+	empty._width = width;
+	empty._height = height;
+
+	return empty; 
+}
+
 Unit& Buffer::get(size_t x, size_t y){
-	return this->_buffer[y][x];
+	return this->_buffer[y]._slice[x];
+}
+
+Buffer Buffer::get_subbuffer(size_t x, size_t y, size_t w, size_t h){
+	Buffer buf = Buffer::_init_empty(w, h);
+	for(size_t i = 0; i < h; ++i){
+		buf._buffer.push_back(this->_buffer[i + y].get_subslice(x, h));
+	}
+	return buf;
+}
+
+size_t Buffer::get_width(){ return this->_width; }
+size_t Buffer::get_height(){ return this->_height; }
+
+void Target::bind(std::shared_ptr<Widget> widget, size_t x, size_t y, size_t w, size_t h){
+	this->_binds.push_back(WidgetBind{widget, x, y, w, h});
 }

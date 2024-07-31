@@ -1,42 +1,25 @@
-/*
-#include <memory>
 #include <progress_bar.hpp>
 
-ProgressBar::ProgressBar(size_t len): _len(len){
-    self._buffer = std::make_shared<Buffer>(len);
-}
+using namespace Utility;
 
-ProgressBar::ProgressBar(size_t len, std::shared_ptr<Buffer> buffer): _len(len){
-    self._buffer = buffer;
-}
-
-void ProgressBar::write(){
-    let ends = ((int)self.opts & (int)Opts::Ends) != 0;
-    let len = this->_len - 2 * ends; 
-    mut max = size_t(this->_per * len);
-    if(max > len)
-        max = len;
-    let min = ends ? 1 : 0;
-    if(ends){
-        self._buffer->get(0, 0).value()->c = '[';
-        self._buffer->get(self._len - 1, 0).value()->c = ']';
-    }
+void ProgressBar::render(Render::Buffer& buf){
+    bool ends = ((int)this->opts & (int)Opts::Ends) != 0;
+    size_t len = buf.get_width() - 2 * ends; 
+	size_t max = size_t(this->per * len);
+    size_t min = ends ? 1 : 0;
+	if(ends){
+		buf.get(0, 0).chr = '[';
+		buf.get(len - 1, 0).chr = ']';
+	}
     for(size_t i = 0; i < max; ++i){
-        mut& v = *self._buffer->get(i + min, 0).value();
-        v.c = self.var_char;
-        v.colors = self.colors;
+		Render::Unit& v = buf.get(i + min, 0);
+        v.chr = this->var_char;
+        v.col = this->colors;
+    }
+    for(size_t i = max; i < len - 1 * ends; ++i){
+		Render::Unit& v = buf.get(i, 0);
+        v.chr = ' ';
+        v.col = this->colors;
     }
 }
 
-void ProgressBar::set_per(float per){
-    this->_per = per;
-}
-
-Buffer& ProgressBar::get_buffer(){
-    return *this->_buffer;
-}
-
-std::shared_ptr<Buffer> ProgressBar::get_shared_buffer(){
-    return this->_buffer;
-}
-*/

@@ -1,10 +1,10 @@
 #ifndef _PROGRESS_BAR_HPP__
 #define _PROGRESS_BAR_HPP__
 
-#include "render/renderee.hpp"
+#include "render/render.hpp"
 
-class ProgressBar : public Render::Renderee{
-private:
+namespace Utility{
+class ProgressBar : public Render::Widget{
 public: 
     enum class Opts: uint8_t {
         Ends = 1,
@@ -12,10 +12,12 @@ public:
     Opts opts = Opts::Ends;
     char var_char = '|';
 	Render::Color colors;
+	float per = 0.;
 
     ProgressBar(){}
+	void render(Render::Buffer& buffer) override;
 
-    void write(Render::Buffer& buffer) override;
 };
+}
 
 #endif

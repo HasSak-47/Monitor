@@ -1,32 +1,48 @@
 #include <curses.h>
+#include <chrono>
 #include <iostream>
-#include <iterator>
-#include <string>
-#include <thread>
-#include <fstream>
-
-#include <logger.hpp>
-#include <utils.hpp>
-#include <system.hpp>
-// #include <renderer.hpp>
-#include <text_line.hpp>
+#include <memory>
+#include <ostream>
+#include <render/render.hpp>
 #include <progress_bar.hpp>
-#include <system_render/memory_bar.hpp>
-#include "render/render.hpp"
+#include <thread>
 
-namespace Sys{
-	System sys;
-}
+using namespace Render;
 
-using namespace Sys;
+/*
+ * this should not be used in the final prod!!!!
+*/
+class TemporyWindow : public Target{
+private:
+	Buffer _b;
+public:
+	TemporyWindow(size_t w, size_t h) : _b(w, h) { }
+	void render() override {
 
-void delay(float seconds){
-	std::this_thread::sleep_for(std::chrono::duration<float>(seconds));
-}
+		for(auto& b : this->_binds){
+			auto sub = this->_b.get_subbuffer(b.x, b.y, b.w, b.h);
+			b.widget->render(sub);
+		}
+
+		for(size_t j = 0; j < _b.get_height(); ++j){
+			for(size_t i = 0; i < _b.get_width(); ++i)
+				std::cout << (char)_b.get(i, j).chr;
+			std::cout << std::endl;
+		}
+		std::cout << "\r\e[" << _b.get_height() << "A";
+		std::cout.flush();
+	}
+
+};
 
 int main() {
-	mut out_file = std::ofstream("../log_file.txt");
-	mut logger = logs::Logger(std::move(out_file));
+	TemporyWindow win(50, 50);
+	auto bar = std::make_shared<Utility::ProgressBar>();
 
+	win.bind(bar, 0, 0, 50, 1);
+	while(true){
+		win.render();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
 	return 0;
 }
