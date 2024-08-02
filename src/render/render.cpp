@@ -47,6 +47,16 @@ Buffer::Buffer(size_t width, size_t height){
 	}
 }
 
+void Buffer::clean(){
+	for(size_t i = 0; i < this->_width; ++i){
+		for(size_t j = 0; j < this->_height; ++j){
+			this->get(i, j).chr = 0;
+			this->get(i, j).col = {1, 1, 1};
+		}
+	}
+
+}
+
 // static
 Buffer Buffer::_init_empty(size_t width, size_t height){
 	Buffer empty;

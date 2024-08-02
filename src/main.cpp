@@ -3,15 +3,15 @@
 #include <chrono>
 #include <iostream>
 #include <memory>
-
-#include <text_area.hpp>
-#include <render/render.hpp>
-#include <progress_bar.hpp>
 #include <thread>
-#include "divided_bar.hpp"
-#include "system.hpp"
-#include "system_render/memory_bar.hpp"
-#include "system_render/process.hpp"
+
+#include <utils/text_area.hpp>
+#include <render/render.hpp>
+#include <utils/progress_bar.hpp>
+#include <utils/divided_bar.hpp>
+#include <system.hpp>
+#include <system_render/memory_bar.hpp>
+#include <system_render/process.hpp>
 
 using namespace Render;
 
@@ -24,14 +24,8 @@ private:
 public:
 	TemporyWindow(size_t w, size_t h) : _b(w, h) { }
 
-	void clean(){
-		for(size_t i = 0; i < _b.get_width(); ++i)
-			for(size_t j = 0; j < _b.get_height(); ++j)
-				_b.get(i, j).chr = ' ';
-	}
-
 	void render() override {
-		this->clean();
+		this->_b.clean();
 		for(auto& b : this->_binds){
 			auto sub = this->_b.get_subbuffer(b.x, b.y, b.w, b.h);
 			b.widget->render(sub);

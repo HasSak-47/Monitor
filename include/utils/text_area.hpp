@@ -8,6 +8,7 @@ namespace Utility{
 class TextArea : public virtual Render::Widget{
 public:
 	std::string text;
+	TextArea() : TextArea(0) {}
 	TextArea(size_t width);
 	void render(Render::Buffer& buffer) override;
 };

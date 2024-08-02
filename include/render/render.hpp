@@ -47,6 +47,7 @@ public:
 	Buffer get_subbuffer(size_t x, size_t y, size_t w, size_t h);
 	size_t get_width();
 	size_t get_height();
+	void clean();
 };
 
 class Widget{
