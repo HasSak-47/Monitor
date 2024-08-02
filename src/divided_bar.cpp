@@ -1,22 +1,33 @@
-
-/*
 #include <divided_bar.hpp>
+#include "render/render.hpp"
+#include <stdexcept>
+#include <sstream>
 
-DividedBar::DividedBar(size_t len, size_t segments):
-ProgressBar(len){
-    for(size_t i = 0; i < len; ++i)
-        self._sections.push_back(ProgressBar(len, self.get_shared_buffer()));
+using namespace Utility;
+
+// badly made
+void DividedBar::render(Render::Buffer& buf){
+	size_t secs = this->_bars.size();
+	for(size_t i = 0; i < secs; ++i){
+		float b = this->_bars[i].per;
+		for(size_t j = 1 + i; j < secs; j++){
+			this->_bars[i].per += this->_bars[j].per;
+		}
+		this->_bars[i].render(buf);
+		this->_bars[i].per = b;
+	}
 }
 
-void DividedBar::set_pers(std::vector<float> pers){
-    let max = std::max(self._sections.size(), pers.size());
-    mut total = 0;
-    for(let sec : pers)
-        total += sec;
 
-    for(size_t i = 0; i < max; ++i){
-        self._sections[i].set_per(total);
-        total -= pers[i];
-    }
+void DividedBar::add_section(ProgressBar bar){
+	this->_bars.push_back(bar);
 }
-*/
+
+ProgressBar& DividedBar::get_section(size_t i){
+	if(this->_bars.size() <= i){
+		std::stringstream s;
+		s << "error i (" << i << ") <= (" << this->_bars.size() << ")";
+		throw std::runtime_error(s.str());
+	}
+	return this->_bars[i];
+}

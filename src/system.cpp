@@ -38,6 +38,7 @@ bool Process::func(){
 bool Process::update(){
     mut stat_file  = std::ifstream(self._stat_path);
     mut statm_file = std::ifstream(self._statm_path);
+
     if(!stat_file.is_open() && !statm_file.is_open())
         return false;
 
@@ -75,7 +76,7 @@ Process::Process(char* pid) {
     self.update();
 }
 
-std::vector<Process>& System::get_processes(){
+const std::vector<Process>& System::get_processes(){
     DIR* dir = opendir("/proc");
     struct dirent* dirent;
 

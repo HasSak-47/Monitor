@@ -1,30 +1,38 @@
 #include <algorithm>
-#include <iostream>
 #include <memory>
 #include <render/render.hpp>
+#include <stdexcept>
 
 using namespace Render;
 
 Slice::Slice(size_t len):
-	_slice(std::make_unique<Unit[]>(len)),
-	start(0),
-	end(len),
-	width(len)
-{ }
+	_slice( std::shared_ptr<Unit[]>(new Unit[len]) ),
+	_start(0),
+	_end(len),
+	_width(len)
+{ // for (size_t i = 0; i < len; ++i) { this->_slice[i] = {' '}; }
+}
 
 Slice::Slice(const Slice& other):
 	_slice( other._slice),
-	start(other.start),
-	end(other.end),
-	width(other.width)
+	_start(other._start),
+	_end(other._end),
+	_width(other._width)
 { }
 
 Slice Slice::get_subslice(size_t start, size_t width){
 	Slice copy = *this;
-	copy.start = this->start + start;
-	copy.end   = std::min(this->start + width, this->end);
+	copy._start = this->_start + start;
+	copy._end   = std::min(this->_start + width, this->_end - 1);
 
 	return copy;
+}
+Unit& Slice::get(size_t i){
+	i += this->_start;
+	if(i >= this->_width){
+		throw std::runtime_error("i is bigger than width");
+	}
+	return this->_slice[i];
 }
 
 Buffer::Buffer(){}
@@ -50,13 +58,16 @@ Buffer Buffer::_init_empty(size_t width, size_t height){
 }
 
 Unit& Buffer::get(size_t x, size_t y){
-	return this->_buffer[y]._slice[x];
+	if(x >= this->_width){
+		throw std::runtime_error("x is bigger than width");
+	}
+	return this->_buffer[x].get(y);
 }
 
 Buffer Buffer::get_subbuffer(size_t x, size_t y, size_t w, size_t h){
 	Buffer buf = Buffer::_init_empty(w, h);
-	for(size_t i = 0; i < h; ++i){
-		buf._buffer.push_back(this->_buffer[i + y].get_subslice(x, h));
+	for(size_t i = 0; i < w; ++i){
+		buf._buffer.push_back(this->_buffer[i + x].get_subslice(y, h));
 	}
 	return buf;
 }

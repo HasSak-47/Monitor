@@ -8,8 +8,7 @@ namespace Render{
 class Color{
 private:
 public:
-	void set_color(int r, int g, int b);	
-	void render_color();
+	float r = 1, g = 1, b = 1;
 };
 
 struct Unit{
@@ -23,13 +22,15 @@ class Slice;
 class Slice{
 protected:
 	std::shared_ptr<Unit[]> _slice;
-	size_t start, end;
-	size_t width;
+	size_t _start, _end;
+	size_t _width;
 public:
+
 	Slice(size_t lenght);
 	Slice(const Slice& other);
 
 	Slice get_subslice(size_t start, size_t lenght);
+	Unit& get(size_t i);
 	friend class Buffer;
 };
 

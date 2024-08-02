@@ -52,7 +52,8 @@ public:
 
     uint64_t _cached_mem;
     uint64_t _buffer_mem;
-    std::vector<Process>& get_processes();
+
+    const std::vector<Process>& get_processes();
     System();
     void update();
 };
