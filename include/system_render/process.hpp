@@ -15,6 +15,16 @@ public:
 
 	void render(Render::Buffer& b) override;
 };
+
+class Processes : virtual private Utility::TextArea, public virtual Render::Widget {
+private:
+	const std::vector<Sys::Process>& _ps;
+public:
+	Processes(const std::vector<Sys::Process>& ps);
+
+	void render(Render::Buffer& buf) override;
+};
+
 }
 
 

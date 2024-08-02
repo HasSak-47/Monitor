@@ -14,3 +14,16 @@ void Process::render(Render::Buffer& buf){
 	this->text = ss.str();
 	this->Utility::TextArea::render(buf);
 }
+
+Processes::Processes(const std::vector<Sys::Process>& ps): Utility::TextArea(0),_ps(ps) { }
+
+void Processes::render(Render::Buffer& buf){
+	size_t count = buf.get_height();
+	size_t width = buf.get_width();
+	for(size_t i = 0; i < count; ++i){
+		Process p = {this->_ps[i]};
+
+		auto sub = buf.get_subbuffer(0, i, width, 1) ;
+		p.render(sub);
+	}
+}

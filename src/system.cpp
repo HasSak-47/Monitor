@@ -46,6 +46,7 @@ bool Process::update(){
         >> self._stat.pid;
     // i lov u c++ never change
     mut buf = ' ';
+	self._stat.name = "";
     while((buf = stat_file.get()) != EOF){
         if(buf == ')')
             break;

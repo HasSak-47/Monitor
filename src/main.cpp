@@ -11,6 +11,7 @@
 #include "divided_bar.hpp"
 #include "system.hpp"
 #include "system_render/memory_bar.hpp"
+#include "system_render/process.hpp"
 
 using namespace Render;
 
@@ -65,8 +66,10 @@ int main() {
 	Sys::System sys;
 
 	auto bar = std::make_shared<SystemRender::MemoryBar>();
+	auto procs = std::make_shared<SystemRender::Processes>(sys.get_processes());
 
 	win.bind(bar, 0, 0, width, 1);
+	win.bind(procs, 0, 1, width, heigth - 1);
 
 	while(true){
 		sys.update();
