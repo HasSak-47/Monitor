@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <sstream>
 #include <string>
 #include <system_render/process.hpp>
@@ -10,16 +11,22 @@ Process::Process(const Sys::Process& proc): Utility::TextArea(0),_proc(proc) { }
 
 void Process::render(Render::Buffer& buf){
 	std::stringstream ss;
-	ss << this->_proc._stat.pid << " " << this->_proc._stat.name;
+	ss << this->_proc._stat.pid << " " << this->_proc._stat.name << " "
+		<< this->_proc.total() / 1000000 << " "
+		;
 	this->text = ss.str();
 	this->Utility::TextArea::render(buf);
 }
 
-Processes::Processes(const std::vector<Sys::Process>& ps): Utility::TextArea(0),_ps(ps) { }
+Processes::Processes(std::vector<Sys::Process>& ps): Utility::TextArea(0),_ps(ps) { }
 
 void Processes::render(Render::Buffer& buf){
 	size_t count = buf.get_height();
 	size_t width = buf.get_width();
+
+	std::sort(this->_ps.begin(), this->_ps.end(), [](const Sys::Process & a, const Sys::Process & b){
+		return a.total() > b.total();
+	});
 	for(size_t i = 0; i < count; ++i){
 		Process p = {this->_ps[i]};
 

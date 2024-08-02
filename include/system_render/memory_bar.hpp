@@ -1,9 +1,9 @@
 #ifndef __SYSTEM_RENDER_MEMORY_BAR_HPP__
 #define __SYSTEM_RENDER_MEMORY_BAR_HPP__
 
-#include "../divided_bar.hpp"
-#include "render/render.hpp"
-#include "system.hpp"
+#include "../utils/divided_bar.hpp"
+#include "../render/render.hpp"
+#include "../system.hpp"
 
 namespace SystemRender{
 

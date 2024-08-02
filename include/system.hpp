@@ -39,6 +39,18 @@ public:
     bool update();
     bool func();
 
+	uint64_t total() const{
+		return 4096ULL * (
+        	// this->_statm.size+
+			this->_statm.resident
+        	// this->_statm.shared +
+        	// this->_statm.text +
+        	// this->_statm.lib +
+        	// this->_statm.data +
+        	// this->_statm.dt
+		);
+	}
+
     friend class System;
 };
 
@@ -53,7 +65,7 @@ public:
     uint64_t _cached_mem;
     uint64_t _buffer_mem;
 
-    const std::vector<Process>& get_processes();
+    std::vector<Process>& get_processes();
     System();
     void update();
 };

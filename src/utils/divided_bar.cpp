@@ -1,5 +1,5 @@
-#include <divided_bar.hpp>
-#include "render/render.hpp"
+#include <utils/divided_bar.hpp>
+#include <render/render.hpp>
 #include <stdexcept>
 #include <sstream>
 

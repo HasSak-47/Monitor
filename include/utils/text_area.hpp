@@ -2,7 +2,7 @@
 #define __TEXT_AREA_HPP__
 
 #include <string>
-#include "render/render.hpp"
+#include "../render/render.hpp"
 
 namespace Utility{
 class TextArea : public virtual Render::Widget{

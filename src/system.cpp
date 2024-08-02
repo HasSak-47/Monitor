@@ -2,8 +2,9 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
-#include <iostream>
 #include <fstream>
+#include <sstream>
+#include <stdexcept>
 #include <string>
 #include <cstring>
 
@@ -32,81 +33,90 @@ static bool is_process(struct dirent* file){
 using namespace Sys;
 
 bool Process::func(){
-    return self._functional;
+    return this->_functional;
 }
 
 bool Process::update(){
-    mut stat_file  = std::ifstream(self._stat_path);
-    mut statm_file = std::ifstream(self._statm_path);
+    mut stat_file  = std::ifstream(this->_stat_path);
+    mut statm_file = std::ifstream(this->_statm_path);
 
-    if(!stat_file.is_open() && !statm_file.is_open())
+
+    if(!stat_file.is_open() || !statm_file.is_open())
         return false;
 
     stat_file
-        >> self._stat.pid;
+        >> this->_stat.pid;
     // i lov u c++ never change
-    mut buf = ' ';
-	self._stat.name = "";
-    while((buf = stat_file.get()) != EOF){
+	this->_stat.name = "";
+    while(!stat_file.eof() && !stat_file.bad()){
+		char buf = stat_file.get();
         if(buf == ')')
             break;
         if(buf != '(')
-            self._stat.name += buf;
+            this->_stat.name += buf;
     }
 
     stat_file
-        >> self._stat.state
-        >> self._stat.parent_pid
-        >> self._stat.group_id;
+        >> this->_stat.state
+        >> this->_stat.parent_pid
+        >> this->_stat.group_id;
 
     statm_file
-        >> self._statm.size
-        >> self._statm.resident
-        >> self._statm.shared
-        >> self._statm.text
-        >> self._statm.lib
-        >> self._statm.data
-        >> self._statm.dt;
+        >> this->_statm.size
+        >> this->_statm.resident
+        >> this->_statm.shared
+        >> this->_statm.text
+        >> this->_statm.lib
+        >> this->_statm.data
+        >> this->_statm.dt;
 
     return true;
 }
 
 Process::Process(char* pid) {
-    self._stat_path = std::string("/proc/") + pid + "/stat";
-    self._statm_path = std::string("/proc/") + pid + "/statm";
-    self.update();
+    this->_stat_path = std::string("/proc/") + pid + "/stat";
+    this->_statm_path = std::string("/proc/") + pid + "/statm";
+	this->update();
 }
 
-const std::vector<Process>& System::get_processes(){
+std::vector<Process>& System::get_processes(){
     DIR* dir = opendir("/proc");
-    struct dirent* dirent;
+	size_t tries = 1;
+	while(dir == nullptr)
+		dir = opendir("/proc");
+	if(dir == nullptr)
+		throw std::runtime_error("could not open /proc!?");
 
-    while(((dirent) = readdir(dir)) != nullptr){
+    struct dirent* dirent = nullptr;
+
+	this->_process.clear();
+    while ((dirent = readdir(dir))){
         if(!is_process(dirent))
             continue;
 
-        let pid = std::stoi(dirent->d_name);
-        mut proc = std::find_if(self._process.begin(), self._process.end(),
+        int pid = std::stoi(dirent->d_name);
+        auto proc = std::find_if(this->_process.begin(), this->_process.end(),
             [&](Process& x){ return x._stat.pid == pid; }
         );
 
-        if(proc != self._process.end()){
-            let alive = proc->update();
+        if(proc != this->_process.end()){
+            bool alive = proc->update();
             if(!alive)
-                self._process.erase(proc);
+                this->_process.erase(proc);
         }
         else
-            self._process.push_back(Process(dirent->d_name));
+            this->_process.push_back(Process(dirent->d_name));
     }
+	closedir(dir);
 
-    return self._process;
+    return this->_process;
 }
 
 #include <iostream>
 #include <map>
 
 void System::update(){
-    self.get_processes();
+    this->get_processes();
     std::ifstream file("/proc/meminfo");
     std::string name, type;
     std::map<std::string, size_t> map;
@@ -114,13 +124,13 @@ void System::update(){
     while(file >> name >> len >> type)
         map[name] = len;
 
-    self._max_mem  = map["MemTotal:"];
-    self._free_mem = map["MemFree:"];
-    self._av_mem = map["MemAvailable:"];
-    self._cached_mem = map["Cached:"];
-    self._buffer_mem = map["Buffers:"];
+    this->_max_mem  = map["MemTotal:"];
+    this->_free_mem = map["MemFree:"];
+    this->_av_mem = map["MemAvailable:"];
+    this->_cached_mem = map["Cached:"];
+    this->_buffer_mem = map["Buffers:"];
 }
 
 System::System(){
-    self.update();
+    this->update();
 }

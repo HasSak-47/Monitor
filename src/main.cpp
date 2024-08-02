@@ -59,8 +59,8 @@ public:
 int main() {
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
-	size_t width = 80;
-	size_t heigth= 20;
+	size_t width = w.ws_col / 2;
+	size_t heigth= w.ws_row / 2;
 
 	TemporyWindow win(width, heigth);
 	Sys::System sys;
@@ -76,7 +76,7 @@ int main() {
 		win.render();
 
 		using namespace std::chrono;
-		std::this_thread::sleep_for(200ms);
+		std::this_thread::sleep_for(100ms);
 	}
 
 	return 0;
