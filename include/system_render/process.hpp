@@ -2,12 +2,12 @@
 #define __SYSTEM_RENDER_PROCESS_HPP__
 
 #include "../system.hpp"
-#include "../utils/text_area.hpp"
+#include "../widgets/text_area.hpp"
 #include "../render/render.hpp"
 
 namespace SystemRender{
 
-class Process : virtual private Utility::TextArea, public virtual Render::Widget{
+class Process : virtual private Widgets::TextArea, public virtual Render::Widget{
 private:
 	const Sys::Process& _proc;
 public:
@@ -16,7 +16,7 @@ public:
 	void render(Render::Buffer& b) override;
 };
 
-class Processes : virtual private Utility::TextArea, public virtual Render::Widget {
+class Processes : virtual private Widgets::TextArea, public virtual Render::Widget {
 private:
 	std::vector<Sys::Process>& _ps;
 public:

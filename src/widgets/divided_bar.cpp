@@ -1,9 +1,9 @@
-#include <utils/divided_bar.hpp>
+#include <widgets/divided_bar.hpp>
 #include <render/render.hpp>
 #include <stdexcept>
 #include <sstream>
 
-using namespace Utility;
+using namespace Widgets;
 
 // badly made
 void DividedBar::render(Render::Buffer& buf){

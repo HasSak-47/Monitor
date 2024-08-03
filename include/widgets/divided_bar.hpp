@@ -6,7 +6,7 @@
 #include "progress_bar.hpp"
 #include "../render/render.hpp"
 
-namespace Utility{
+namespace Widgets{
 
 class DividedBar : public virtual Render::Widget {
 private:

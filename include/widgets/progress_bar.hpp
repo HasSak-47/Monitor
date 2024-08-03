@@ -3,7 +3,7 @@
 
 #include "../render/render.hpp"
 
-namespace Utility{
+namespace Widgets{
 
 class ProgressBar : public virtual Render::Widget{
 public: 

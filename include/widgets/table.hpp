@@ -2,11 +2,11 @@
 #include "render/render.hpp"
 #include "text_area.hpp"
 
-namespace Utility{
+namespace Widgets{
 
 class Table : public virtual Render::Widget{
 private:
-	struct Row : public virtual Utility::TextArea{
+	struct Row : public virtual Widgets::TextArea{
 		Row(Table& parent) : _parent(parent) {}
 		std::vector<std::string> _data;
 		Table& _parent;

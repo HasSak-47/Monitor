@@ -1,7 +1,6 @@
-#include <utils/progress_bar.hpp>
+#include <widgets/progress_bar.hpp>
 
-using namespace Utility;
-
+using namespace Widgets;
 
 void ProgressBar::render(Render::Buffer& buf){
     bool ends = this->has_opt(Opts::Ends);

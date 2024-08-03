@@ -1,12 +1,11 @@
-#include <iostream>
 #include <system_render/memory_bar.hpp>
 
 using SystemRender::MemoryBar;
 
 MemoryBar::MemoryBar() : DividedBar() {
-	this->add_section(Utility::ProgressBar({1, 1, 0})); // cache
-	this->add_section(Utility::ProgressBar({1, 0, 1})); // buffer
-	this->add_section(Utility::ProgressBar({0, 1, 0})); // used
+	this->add_section(Widgets::ProgressBar({1, 1, 0})); // cache
+	this->add_section(Widgets::ProgressBar({1, 0, 1})); // buffer
+	this->add_section(Widgets::ProgressBar({0, 1, 0})); // used
 }
 
 void MemoryBar::render(Render::Buffer& buf){

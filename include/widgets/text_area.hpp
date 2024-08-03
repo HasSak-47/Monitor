@@ -4,7 +4,7 @@
 #include <string>
 #include "../render/render.hpp"
 
-namespace Utility{
+namespace Widgets{
 class TextArea : public virtual Render::Widget{
 public:
 	std::string text;

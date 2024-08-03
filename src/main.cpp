@@ -1,14 +1,13 @@
 #include <sys/ioctl.h>
 
-#include <chrono>
 #include <iostream>
 #include <memory>
 #include <thread>
 
-#include <utils/text_area.hpp>
+#include <widgets/text_area.hpp>
 #include <render/render.hpp>
-#include <utils/progress_bar.hpp>
-#include <utils/divided_bar.hpp>
+#include <widgets/progress_bar.hpp>
+#include <widgets/divided_bar.hpp>
 #include <system.hpp>
 #include <system_render/memory_bar.hpp>
 #include <system_render/process.hpp>

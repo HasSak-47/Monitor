@@ -3,7 +3,6 @@
 #include <cctype>
 #include <cstdio>
 #include <fstream>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <cstring>
@@ -13,7 +12,6 @@
 #include <unistd.h>
 
 // my stuff
-#include <utils.hpp>
 #include <system.hpp>
 
 
@@ -22,7 +20,7 @@ static bool is_process(struct dirent* file){
         return false;
 
     // not efficient
-    let len = strlen(file->d_name);
+    size_t len = strlen(file->d_name);
     char* name = file->d_name;
     if(std::all_of(name, name + len, isdigit))
         return true;
@@ -37,8 +35,8 @@ bool Process::func(){
 }
 
 bool Process::update(){
-    mut stat_file  = std::ifstream(this->_stat_path);
-    mut statm_file = std::ifstream(this->_statm_path);
+    std::ifstream stat_file(this->_stat_path);
+    std::ifstream statm_file(this->_statm_path);
 
 
     if(!stat_file.is_open() || !statm_file.is_open())

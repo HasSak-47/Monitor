@@ -2,12 +2,12 @@
 #include <sstream>
 #include <string>
 #include <system_render/process.hpp>
-#include "render/render.hpp"
-#include "text_area.hpp"
+#include <render/render.hpp>
+#include <widgets/text_area.hpp>
 
 using namespace SystemRender;
 
-Process::Process(const Sys::Process& proc): Utility::TextArea(0),_proc(proc) { }
+Process::Process(const Sys::Process& proc): Widgets::TextArea(0),_proc(proc) { }
 
 void Process::render(Render::Buffer& buf){
 	std::stringstream ss;
@@ -15,10 +15,10 @@ void Process::render(Render::Buffer& buf){
 		<< this->_proc.total() / 1000000 << " "
 		;
 	this->text = ss.str();
-	this->Utility::TextArea::render(buf);
+	this->Widgets::TextArea::render(buf);
 }
 
-Processes::Processes(std::vector<Sys::Process>& ps): Utility::TextArea(0),_ps(ps) { }
+Processes::Processes(std::vector<Sys::Process>& ps): Widgets::TextArea(0),_ps(ps) { }
 
 void Processes::render(Render::Buffer& buf){
 	size_t count = buf.get_height();

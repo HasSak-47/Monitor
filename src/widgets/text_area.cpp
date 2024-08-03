@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <utils/text_area.hpp>
+#include <widgets/text_area.hpp>
 
-using namespace Utility;
+using namespace Widgets;
 
 TextArea::TextArea(size_t width) {
 	this->text.resize(width, ' ');
