@@ -18,19 +18,25 @@ void Process::render(Render::Buffer& buf){
 	this->Widgets::TextArea::render(buf);
 }
 
-Processes::Processes(std::vector<Sys::Process>& ps): Widgets::TextArea(0),_ps(ps) { }
+Processes::Processes(std::vector<Sys::Process>& ps): Widgets::Table({"pid", "name", "mem"}),_ps(ps) { }
 
 void Processes::render(Render::Buffer& buf){
-	size_t count = buf.get_height();
-	size_t width = buf.get_width();
-
 	std::sort(this->_ps.begin(), this->_ps.end(), [](const Sys::Process & a, const Sys::Process & b){
 		return a.total() > b.total();
 	});
-	for(size_t i = 0; i < count; ++i){
-		Process p = {this->_ps[i]};
+	this->set_size(0, 5);
+	this->set_size(2, 5);
 
-		auto sub = buf.get_subbuffer(0, i, width, 1) ;
-		p.render(sub);
+	size_t height = buf.get_height();
+	size_t offset = 0;
+
+	for(size_t i = 0; i < height; ++i){
+		this->set_col(i, {
+			std::to_string(this->_ps[i]._stat.pid),
+			this->_ps[i]._stat.name,
+			std::to_string(this->_ps[i].total())
+		});
 	}
+
+	this->Widgets::Table::render(buf);
 }

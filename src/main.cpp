@@ -4,10 +4,13 @@
 #include <memory>
 #include <thread>
 
-#include <widgets/text_area.hpp>
 #include <render/render.hpp>
+
+#include <widgets/text_area.hpp>
 #include <widgets/progress_bar.hpp>
 #include <widgets/divided_bar.hpp>
+#include <widgets/table.hpp>
+
 #include <system.hpp>
 #include <system_render/memory_bar.hpp>
 #include <system_render/process.hpp>
@@ -19,12 +22,11 @@ using namespace Render;
 */
 class TemporyWindow : public Target{
 private:
-	Buffer _b;
 public:
+	Buffer _b;
 	TemporyWindow(size_t w, size_t h) : _b(w, h) { }
 
 	void render() override {
-		this->_b.clean();
 		for(auto& b : this->_binds){
 			auto sub = this->_b.get_subbuffer(b.x, b.y, b.w, b.h);
 			b.widget->render(sub);
@@ -44,7 +46,7 @@ public:
 			std::cout << std::endl;
 		}
 		std::cout << "\e[" << _b.get_height() << "A";
-		std::cout.flush();
+		this->_b.clean();
 	}
 
 };

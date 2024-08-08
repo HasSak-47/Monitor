@@ -50,7 +50,7 @@ Buffer::Buffer(size_t width, size_t height){
 void Buffer::clean(){
 	for(size_t i = 0; i < this->_width; ++i){
 		for(size_t j = 0; j < this->_height; ++j){
-			this->get(i, j).chr = 0;
+			this->get(i, j).chr = ' ';
 			this->get(i, j).col = {1, 1, 1};
 		}
 	}
@@ -76,8 +76,10 @@ Unit& Buffer::get(size_t x, size_t y){
 
 Buffer Buffer::get_subbuffer(size_t x, size_t y, size_t w, size_t h){
 	Buffer buf = Buffer::_init_empty(w, h);
-	for(size_t i = 0; i < w; ++i){
-		buf._buffer.push_back(this->_buffer[i + x].get_subslice(y, h));
+	size_t max = std::min(x + w, this->get_width());
+
+	for(size_t i = x; i < max; ++i){
+		buf._buffer.push_back(this->_buffer[i].get_subslice(y, h));
 	}
 	return buf;
 }
