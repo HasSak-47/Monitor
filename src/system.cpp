@@ -28,6 +28,10 @@ static bool is_process(struct dirent* file){
     return false;
 }
 
+namespace Sys{
+    System sys = {};
+}
+
 using namespace Sys;
 
 bool Process::func(){
@@ -132,3 +136,4 @@ void System::update(){
 System::System(){
     this->update();
 }
+

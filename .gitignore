@@ -3,3 +3,4 @@ build/*
 .cache
 monitor
 vgcore*
+compile_commands.json

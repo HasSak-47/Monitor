@@ -7,10 +7,12 @@
 namespace Widgets{
 class TextArea : public virtual Render::Widget{
 public:
-	std::string text;
+	std::string text = "";
+
 	TextArea() : TextArea(0) {}
 	TextArea(size_t width);
 	TextArea(std::string text);
+	~TextArea() {}
 	void render(Render::Buffer& buffer) override;
 };
 }

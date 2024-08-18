@@ -23,7 +23,7 @@ Slice::Slice(const Slice& other):
 Slice Slice::get_subslice(size_t start, size_t width){
 	Slice copy = *this;
 	copy._start = this->_start + start;
-	copy._end   = std::min(this->_start + width, this->_end - 1);
+	copy._end   = std::min(this->_start + width, this->_end);
 
 	return copy;
 }
@@ -36,7 +36,31 @@ Unit& Slice::get(size_t i){
 }
 
 Buffer::Buffer(){}
+Buffer::Buffer(const Buffer& other):
+	_buffer(other._buffer),
+	_width(other._width),
+	_height(other._height)
+{ }
 
+Buffer::Buffer(Buffer&& moved):
+	_buffer(std::move(moved._buffer)),
+	_width(moved._width),
+	_height(moved._height)
+{ }
+
+Buffer& Buffer::operator=(const Buffer& other){
+	this->_buffer = other._buffer;
+	this->_width = other._width;
+	this->_height = other._height;
+	return *this;
+}
+
+Buffer& Buffer::operator=(Buffer&& moved){
+	this->_buffer = std::move(moved._buffer);
+	this->_width = moved._width;
+	this->_height = moved._height;
+	return *this;
+}
 Buffer::Buffer(size_t width, size_t height){
 	this->_buffer.reserve(width);
 	this->_width = width;

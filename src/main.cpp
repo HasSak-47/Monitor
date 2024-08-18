@@ -16,14 +16,13 @@
 #include <system_render/process.hpp>
 
 using namespace Render;
-
 /*
  * this should not be used in the final prod!!!!
 */
 class TemporyWindow : public Target{
 private:
-public:
 	Buffer _b;
+public:
 	TemporyWindow(size_t w, size_t h) : _b(w, h) { }
 
 	void render() override {
@@ -58,16 +57,13 @@ int main() {
 	size_t heigth= w.ws_row / 2;
 
 	TemporyWindow win(width, heigth);
-	Sys::System sys;
 
 	auto bar = std::make_shared<SystemRender::MemoryBar>();
-	auto procs = std::make_shared<SystemRender::Processes>(sys.get_processes());
-
-	win.bind(bar, 0, 0, width, 1);
-	win.bind(procs, 0, 1, width, heigth - 1);
+	auto procs = std::make_shared<SystemRender::Processes>(Sys::sys.get_processes());
+    win.bind(procs, 0, 0, width, heigth);
 
 	while(true){
-		sys.update();
+        Sys::sys.update();
 		win.render();
 
 		using namespace std::chrono;

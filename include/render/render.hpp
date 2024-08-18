@@ -42,6 +42,11 @@ private:
 public:
 	Buffer();
 	Buffer(size_t x, size_t y = 1);
+	Buffer(const Buffer& other);
+	Buffer(Buffer&& moved);
+	Buffer& operator=(const Buffer& other);
+	Buffer& operator=(Buffer&& moved);
+
 	Unit& get(size_t x, size_t y = 0);
 
 	Buffer get_subbuffer(size_t x, size_t y, size_t w, size_t h);
