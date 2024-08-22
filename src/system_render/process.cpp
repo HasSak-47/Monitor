@@ -10,6 +10,9 @@ Processes::Processes(std::vector<Sys::Process>& ps): Widgets::Table(3),_ps(ps) {
     this->get_header(0) = "pid";
     this->get_header(1) = "name";
     this->get_header(2) = "mem MB";
+
+    this->set_row_width(0, 5);
+    this->set_row_width(2, 5);
 }
 
 void Processes::render(Render::Buffer& buf){

@@ -93,7 +93,7 @@ Buffer Buffer::_init_empty(size_t width, size_t height){
 
 Unit& Buffer::get(size_t x, size_t y){
 	if(x >= this->_width){
-		throw std::runtime_error("x is bigger than width");
+		throw std::runtime_error("Buffer::get x is bigger than width");
 	}
 	return this->_buffer[x].get(y);
 }

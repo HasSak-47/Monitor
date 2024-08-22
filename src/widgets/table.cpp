@@ -23,14 +23,23 @@ void Table::Row::render(Render::Buffer& buf){
 	auto& e = this->parent._expected_width;
     size_t offset = 0;
     size_t col = 0;
-    while(offset < buf.get_width() && col < this->_areas.size()){
+
+    const size_t max_width = buf.get_width() - 2;
+    while(offset < max_width && col < this->_areas.size()){
+        buf.get(offset++).chr = '|';
+        if(offset > max_width)
+            return;
+
         size_t inc = e[col].value_or(this->_areas[col].text.size());
+        if(offset + inc >= max_width)
+            inc = buf.get_width() - offset;
+
         auto sub = buf.get_subbuffer(offset, 0, inc, 1);
         this->_areas[col].render(sub);
-        buf.get(offset + inc, 0).chr = '|';
         offset += inc + 1;
         col++;
     }
+    buf.get(max_width + 1).chr = '|';
 }
 
 void Table::set_row_width(size_t id, size_t s){
@@ -47,17 +56,24 @@ void Table::set_dimentions(size_t w, size_t h){
 }
 
 void Table::render(Render::Buffer& buf){
+    size_t used_size = 0;
+    size_t to_expand = 0;
+    for(size_t i = 0; i < this->_expected_width.size(); ++i){
+        if(this->_expected_width[i].has_value()){
+            used_size += 2 + this->_expected_width[i].value();
+            continue;
+        }
+
+        to_expand++;
+    }
+
     for(size_t i = 0; i < this->_expected_width.size(); ++i){
         if(this->_expected_width[i].has_value())
             continue;
-        size_t max = this->_headers._areas[i].text.size();
-        for(size_t j = 0; j < this->_rows.size(); ++j){
-            size_t k = this->_rows[j]._areas[i].text.size();
-            if(max < k)
-                max = k;
-        }
-        this->_expected_width[i] = max;
+
+        this->_expected_width[i] = (buf.get_width() - used_size - 2) / to_expand;
     }
+
 	auto sub = buf.get_subbuffer(0, 0, buf.get_width(), 1);
 	this->_headers.render(sub);
 
