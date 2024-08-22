@@ -74,13 +74,27 @@ void Table::render(Render::Buffer& buf){
         this->_expected_width[i] = (buf.get_width() - used_size - 2) / to_expand;
     }
 
-	auto sub = buf.get_subbuffer(0, 0, buf.get_width(), 1);
+	auto ln1 = buf.get_subbuffer(0, 0, buf.get_width(), 1);
+	auto sub = buf.get_subbuffer(0, 1, buf.get_width(), 1);
+	auto ln2 = buf.get_subbuffer(0, 2, buf.get_width(), 1);
+	auto ln3 = buf.get_subbuffer(0, buf.get_height() - 1, buf.get_width(), 1);
+	this->_headers.render(ln1);
 	this->_headers.render(sub);
+	this->_headers.render(ln2);
+	this->_headers.render(ln3);
+    for(size_t i = 0; i < buf.get_width(); ++i){
+        if(ln1.get(i, 0).chr != '|'){
+            ln1.get(i, 0).chr = '-';
+            ln2.get(i, 0).chr = '-';
+            ln3.get(i, 0).chr = '-';
+        }
 
-    size_t max = std::min(buf.get_height() - 1, this->_rows.size());
+    }
+
+    size_t max = std::min(buf.get_height() - 4, this->_rows.size());
 
     for(size_t i = 0; i < max; ++i){
-        auto sub = buf.get_subbuffer(0, i + 1, buf.get_width(), 1);
+        auto sub = buf.get_subbuffer(0, i + 3, buf.get_width(), 1);
         this->_rows[i].render(sub);
     }
 }
