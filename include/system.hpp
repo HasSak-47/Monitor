@@ -68,11 +68,13 @@ public:
         size_t guest_nice;
     };
 private:
-    std::vector<Cpu> _cpu;
+    std::vector<Cpu> _curr_cpu;
+    std::vector<Cpu> _prev_cpu;
 public:
     ProcStat();
     ~ProcStat() {}
     std::vector<Cpu>& get_cpus();
+    std::vector<Cpu> get_cpus_diff();
 
     void update();
 

@@ -14,6 +14,7 @@
 #include <system.hpp>
 #include <system_render/memory_bar.hpp>
 #include <system_render/process.hpp>
+#include "system_render/cpubar.hpp"
 
 using namespace Render;
 /*
@@ -51,33 +52,34 @@ public:
 };
 
 int main() {
-    Sys::sys.stat.update();
-    auto& s = Sys::sys.stat.get_cpus();
-
-    for(size_t i = 0; i < s.size(); ++i){
-        std::cout << "name [" <<  i << "]: " << s[i].name << '\n';
-    }
-    /*
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
-	size_t width = w.ws_col / 2;
+	size_t width = 102;
 	size_t heigth= w.ws_row / 2;
 
 	TemporyWindow win(width, heigth);
 
-	auto bar = std::make_shared<SystemRender::MemoryBar>();
+	auto membar = std::make_shared<SystemRender::MemoryBar>();
 	auto procs = std::make_shared<SystemRender::Processes>(Sys::sys.get_processes());
-    win.bind(bar, 0, 0, width, 1);
-    win.bind(procs, 0, 1, width, heigth - 1);
+
+    win.bind(membar, 0, 0, width, 1);
+    size_t cores = Sys::sys.stat.get_cpus().size();
+
+    for(size_t i = 0; i < 1; ++i){
+	    auto cpubar = std::make_shared<SystemRender::CPUBar>();
+        cpubar->id = i;
+        win.bind(cpubar, 0, 1 + i, width, 1);
+    }
+
+    win.bind(procs, 0, cores + 1, width, heigth - (cores + 1));
 
 	while(true){
         Sys::sys.update();
 		win.render();
 
 		using namespace std::chrono;
-		std::this_thread::sleep_for(100ms);
+		std::this_thread::sleep_for(1ms);
 	}
-    */
 
 	return 0;
 }

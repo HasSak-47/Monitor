@@ -3,7 +3,6 @@
 
 #include "../widgets/divided_bar.hpp"
 #include "../render/render.hpp"
-#include "../system.hpp"
 
 namespace SystemRender{
 

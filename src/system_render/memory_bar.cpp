@@ -1,4 +1,5 @@
 #include <system_render/memory_bar.hpp>
+#include <system.hpp>
 
 using SystemRender::MemoryBar;
 

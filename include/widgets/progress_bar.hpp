@@ -9,7 +9,7 @@ class ProgressBar : public virtual Render::Widget{
 public: 
     enum class Opts: uint8_t {
         Ends = 1,
-
+        Numbers = 2,
     };
     Opts opts = Opts::Ends;
 

@@ -4,3 +4,4 @@ build/*
 monitor
 vgcore*
 compile_commands.json
+.ignore

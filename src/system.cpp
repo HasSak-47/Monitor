@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <ostream>
 #include <stdexcept>
 #include <string>
 
@@ -103,7 +104,20 @@ ProcStat::ProcStat(){
 }
 
 std::vector<ProcStat::Cpu>& ProcStat::get_cpus(){
-    return this->_cpu;
+    return this->_curr_cpu;
+}
+
+std::vector<ProcStat::Cpu> ProcStat::get_cpus_diff(){
+    std::vector<ProcStat::Cpu> dif(this->_curr_cpu.size());
+    for(size_t i = 0; i < _curr_cpu.size(); ++i){
+		dif[i].name = this->_prev_cpu[i].name;
+		dif[i].user = this->_prev_cpu[i].user - this->_curr_cpu[i].user;
+		dif[i].nice = this->_prev_cpu[i].nice - this->_curr_cpu[i].nice;
+		dif[i].system = this->_prev_cpu[i].system - this->_curr_cpu[i].system;
+		dif[i].idle = this->_prev_cpu[i].idle - this->_curr_cpu[i].idle;
+    }
+
+    return this->_curr_cpu;
 }
 
 void ProcStat::update(){
@@ -113,15 +127,20 @@ void ProcStat::update(){
     while(readdir(dir)) cpu_count++;
     closedir(dir);
 
+    if(cpu_count == 0){
+        throw (std::runtime_error("cpu number too low!"));
+    }
+
     if(cpu_count <= 2)
         return;
     cpu_count -= 1;
 
-    this->_cpu.resize(cpu_count, {});
+    this->_prev_cpu = this->_curr_cpu;
+    this->_curr_cpu.resize(cpu_count, {});
 
     std::ifstream stat("/proc/stat");
     for(size_t i = 0; i < cpu_count; ++i){
-        stat >> this->_cpu[i];
+        stat >> this->_curr_cpu[i];
     }
 }
 
@@ -164,6 +183,8 @@ std::vector<Process>& System::get_processes(){
 void System::update(){
     // lmaooo should have not implemented it like this
     this->get_processes();
+    this->stat.update();
+
     std::ifstream file("/proc/meminfo");
     std::string name, type;
     std::map<std::string, size_t> map;
@@ -171,9 +192,9 @@ void System::update(){
     while(file >> name >> len >> type)
         map[name] = len;
 
-    this->_max_mem  = map["MemTotal:"];
-    this->_free_mem = map["MemFree:"];
-    this->_av_mem = map["MemAvailable:"];
+    this->_max_mem    = map["MemTotal:"];
+    this->_free_mem   = map["MemFree:"];
+    this->_av_mem     = map["MemAvailable:"];
     this->_cached_mem = map["Cached:"];
     this->_buffer_mem = map["Buffers:"];
 }

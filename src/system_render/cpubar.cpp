@@ -1,26 +1,34 @@
-#ifndef __SYSTEM_RENDER_CPU__
-#define __SYSTEM_RENDER_CPU__
+#include <iostream>
+#include <system_render/cpubar.hpp>
+#include <system.hpp>
+#include <iomanip>
 
-#include "../widgets/divided_bar.hpp"
-#include "../render/render.hpp"
-#include "../system.hpp"
+#include <sstream>
+#include "widgets/text_area.hpp"
 
-namespace SystemRender{
+using namespace SystemRender;
 
-class CPUBar : private Widgets::DividedBar, virtual public Render::Widget{
-private:
-	Widgets::DividedBar _bar;
-	Sys::System sys;
-	enum Sections {
-		Cache = 0,
-		Buffer = 1,
-		Used = 2,
-	};
-public:
-	MemoryBar();
-	void render(Render::Buffer& buf) override;
-};
-
+CPUBar::CPUBar() {
+    this->add_section(Widgets::ProgressBar({0, 1, 0}));
+    this->add_section(Widgets::ProgressBar({1, 0, 0}));
 }
 
-#endif
+void CPUBar::render(Render::Buffer& buf){
+    const auto& cpu = Sys::sys.stat.get_cpus_diff()[this->id];
+    size_t total = cpu.idle;
+
+    float user = cpu.user / (float)total;
+    float kernel = cpu.system / (float)total;
+
+    this->get_section(0).per = user;
+    this->get_section(1).per = kernel;
+    this->Widgets::DividedBar::render(buf);
+    if(this->render_text){
+        std::stringstream ss;
+        ss << std::setw(5) << std::setprecision(3) << 100 * (kernel + user);
+
+        auto sub = buf.get_subbuffer(buf.get_width() - 10, 0, 10, 1);
+        Widgets::TextArea area(ss.str());
+        area.render(sub);
+    }
+}
