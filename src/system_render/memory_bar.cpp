@@ -9,9 +9,9 @@ MemoryBar::MemoryBar() : DividedBar() {
 }
 
 void MemoryBar::render(Render::Buffer& buf){
-    float total_cached = this->sys._cached_mem / float(this->sys._max_mem);
-    float total_buffer = this->sys._buffer_mem / float(this->sys._max_mem);
-    float total_free   = this->sys._free_mem   / float(this->sys._max_mem);
+    float total_cached = Sys::sys._cached_mem / float(Sys::sys._max_mem);
+    float total_buffer = Sys::sys._buffer_mem / float(Sys::sys._max_mem);
+    float total_free   = Sys::sys._free_mem   / float(Sys::sys._max_mem);
 	float total_used   = 1. - total_free;
 
 	this->get_section(Cache).per = total_cached;

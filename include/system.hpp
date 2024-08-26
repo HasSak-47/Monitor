@@ -1,7 +1,5 @@
 #ifndef __SYSTEM_HPP__
-#define __SYSTEM_HPP__
-
-#include <unistd.h>
+#define __SYSTEM_HPP__ #include <unistd.h>
 #include <stdint.h>
 #include <cstdint>
 #include <vector>
@@ -54,10 +52,39 @@ public:
     friend class System;
 };
 
+class ProcStat{
+public:
+    struct Cpu{
+        std::string name;
+        size_t user;
+        size_t nice;
+        size_t system;
+        size_t idle;
+        size_t iowait;
+        size_t irq;
+        size_t softirq;
+        size_t steal;
+        size_t guest;
+        size_t guest_nice;
+    };
+private:
+    std::vector<Cpu> _cpu;
+public:
+    ProcStat();
+    ~ProcStat() {}
+    std::vector<Cpu>& get_cpus();
+
+    void update();
+
+    friend class System;
+};
+
 class System{
 private:
     std::vector<Process> _process;
 public:
+    ProcStat stat;
+
     uint64_t _max_mem;
     uint64_t _free_mem;
     uint64_t _av_mem;
@@ -67,6 +94,7 @@ public:
 
     std::vector<Process>& get_processes();
     System();
+
     void update();
 };
 

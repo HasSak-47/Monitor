@@ -1,5 +1,5 @@
-#ifndef __SYSTEM_RENDER_MEMORY_BAR_HPP__
-#define __SYSTEM_RENDER_MEMORY_BAR_HPP__
+#ifndef __SYSTEM_RENDER_CPU__
+#define __SYSTEM_RENDER_CPU__
 
 #include "../widgets/divided_bar.hpp"
 #include "../render/render.hpp"
@@ -7,9 +7,10 @@
 
 namespace SystemRender{
 
-class MemoryBar : private Widgets::DividedBar, virtual public Render::Widget{
+class CPUBar : private Widgets::DividedBar, virtual public Render::Widget{
 private:
 	Widgets::DividedBar _bar;
+	Sys::System sys;
 	enum Sections {
 		Cache = 0,
 		Buffer = 1,

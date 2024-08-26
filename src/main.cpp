@@ -51,6 +51,13 @@ public:
 };
 
 int main() {
+    Sys::sys.stat.update();
+    auto& s = Sys::sys.stat.get_cpus();
+
+    for(size_t i = 0; i < s.size(); ++i){
+        std::cout << "name [" <<  i << "]: " << s[i].name << '\n';
+    }
+    /*
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
 	size_t width = w.ws_col / 2;
@@ -70,6 +77,7 @@ int main() {
 		using namespace std::chrono;
 		std::this_thread::sleep_for(100ms);
 	}
+    */
 
 	return 0;
 }

@@ -1,11 +1,13 @@
 // c/c++ stuff
 #include <algorithm>
-#include <cctype>
-#include <cstdio>
+#include <iostream>
 #include <fstream>
 #include <stdexcept>
 #include <string>
+
 #include <cstring>
+#include <cctype>
+#include <cstdio>
 
 // unix stuff
 #include <dirent.h>
@@ -81,6 +83,48 @@ Process::Process(char* pid) {
 	this->update();
 }
 
+std::istream& operator>>(std::istream& is, ProcStat::Cpu& cpu){
+    is >> cpu.name
+        >> cpu.user
+        >> cpu.nice
+        >> cpu.system
+        >> cpu.idle
+        >> cpu.iowait
+        >> cpu.irq
+        >> cpu.softirq
+        >> cpu.steal
+        >> cpu.guest
+        >> cpu.guest_nice;
+    return is;
+}
+
+ProcStat::ProcStat(){
+    this->update();
+}
+
+std::vector<ProcStat::Cpu>& ProcStat::get_cpus(){
+    return this->_cpu;
+}
+
+void ProcStat::update(){
+    size_t cpu_count = 0;
+    // hacky to do it
+    DIR* dir = opendir("/dev/cpu");
+    while(readdir(dir)) cpu_count++;
+    closedir(dir);
+
+    if(cpu_count <= 2)
+        return;
+    cpu_count -= 1;
+
+    this->_cpu.resize(cpu_count, {});
+
+    std::ifstream stat("/proc/stat");
+    for(size_t i = 0; i < cpu_count; ++i){
+        stat >> this->_cpu[i];
+    }
+}
+
 std::vector<Process>& System::get_processes(){
     DIR* dir = opendir("/proc");
 	size_t tries = 1;
@@ -118,6 +162,7 @@ std::vector<Process>& System::get_processes(){
 #include <map>
 
 void System::update(){
+    // lmaooo should have not implemented it like this
     this->get_processes();
     std::ifstream file("/proc/meminfo");
     std::string name, type;
