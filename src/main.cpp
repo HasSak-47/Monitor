@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 #include <thread>
 
 #include <render/render.hpp>
@@ -51,11 +52,20 @@ public:
 
 };
 
-int main() {
+int main(const int argc, const char* argv[]) {
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
-	size_t width = 102;
-	size_t heigth= w.ws_row / 2;
+	size_t width = w.ws_col - 2;
+	size_t heigth= w.ws_row - 2;
+    if(argc > 1){
+        heigth = std::stoi(argv[1]);
+        if(argc > 2)
+            width = std::stoi(argv[2]);
+    }
+    if(width < 10)
+        width = 10;
+    if(heigth < 10)
+        heigth = 10;
 
 	TemporyWindow win(width, heigth);
 
@@ -63,7 +73,7 @@ int main() {
 	auto procs = std::make_shared<SystemRender::Processes>(Sys::sys.get_processes());
 
     win.bind(membar, 0, 0, width, 1);
-    size_t cores = Sys::sys.stat.get_cpus().size();
+    size_t cores = 0; //Sys::sys.stat.get_cpus().size();
 
     for(size_t i = 0; i < 1; ++i){
 	    auto cpubar = std::make_shared<SystemRender::CPUBar>();
@@ -71,7 +81,7 @@ int main() {
         win.bind(cpubar, 0, 1 + i, width, 1);
     }
 
-    win.bind(procs, 0, cores + 1, width, heigth - (cores + 1));
+    win.bind(procs, 0, cores + 2, width, heigth - (cores + 2));
 
 	while(true){
         Sys::sys.update();
